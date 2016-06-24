@@ -1,0 +1,6 @@
+product:
+    resource: ProductBundle\Controller\ProductController
+    type:     rest
+    prefix:   /
+    
+    
