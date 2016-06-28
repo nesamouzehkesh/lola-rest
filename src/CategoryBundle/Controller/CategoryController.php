@@ -1,6 +1,5 @@
 <?php
-
-namespace ProductBundle\Controller;
+namespace CategoryBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,17 +9,17 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\FOSRestController;
 
-class ProductController extends FOSRestController
+class CategoryController extends FOSRestController
 {
-    
-    public function getProductsAction()
+    /**
+     * @Route("/")
+     */
+    public function listCategoriesAction()
     {
-        $products = $this
-            ->getDoctrine()
-            ->getEntityManager()
-            ->getRepository('ProductBundle:Product')
-            ->getProducts();
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository('ProductBundle:ProductCategory')
+            ->findAll();
         
-        return $products;
+        return $categories;
     }
 }

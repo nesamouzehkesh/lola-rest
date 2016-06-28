@@ -2,6 +2,9 @@
 
 namespace ProductBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+
+
 /**
  * ProductCategoryRepository
  *
