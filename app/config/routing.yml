@@ -1,9 +1,3 @@
-category_bundle:
-    resource: "@CategoryBundle/Resources/config/routes.yml"
-    type:     rest
-    prefix:   /api/category
-
-
 product_bundle:
     resource: "@ProductBundle/Resources/config/routes.yml"    
     prefix: /api/product

@@ -1,5 +1,6 @@
 <?php
-namespace CategoryBundle\Controller;
+
+namespace ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,13 +13,14 @@ use FOS\RestBundle\Controller\FOSRestController;
 class CategoryController extends FOSRestController
 {
     /**
-     * @Route("/")
-     */
-    public function listCategoriesAction()
+    * @ApiDoc()
+    */
+    public function getCategoriesAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository('ProductBundle:ProductCategory')
-            ->findAll();
+        $categories = $em
+            ->getRepository('ProductBundle:ProductCategory')
+            ->getCategories();
         
         return $categories;
     }

@@ -4,8 +4,6 @@ product:
     prefix:   /
     
 category:
-    resource: CategoryBundle\Controller\CategoryController
+    resource: ProductBundle\Controller\CategoryController
     type:     rest
     prefix:   /
-    
-    

@@ -13,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductCategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * 
+     * @return type
+     */
+    public function getCategories($order = 'category.id')
+    {
+        $qb = $this->createQueryBuilder('category')
+            ->select(
+                  'category.id, '
+                . 'category.name'
+                )
+            ->orderBy($order);
+        
+        return $qb->getQuery()->getScalarResult();
+    }
 }

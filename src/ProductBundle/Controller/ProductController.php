@@ -12,14 +12,16 @@ use FOS\RestBundle\Controller\FOSRestController;
 
 class ProductController extends FOSRestController
 {
-    
-    public function getProductsAction()
+    /**
+    * @ApiDoc()
+    */
+    public function getProductsAction($id)
     {
         $products = $this
             ->getDoctrine()
             ->getEntityManager()
-            ->getRepository('ProductBundle:Product')
-            ->getProducts();
+            ->getRepository('ProductBundle:ProductStock')
+            ->getProducts($id);
         
         return $products;
     }

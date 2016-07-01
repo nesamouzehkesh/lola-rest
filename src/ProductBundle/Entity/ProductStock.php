@@ -22,20 +22,6 @@ class ProductStock
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="product_id", type="integer")
-     */
-    private $productId;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="category_id", type="integer")
-     */
-    private $categoryId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="count", type="string", length=255)
@@ -61,7 +47,6 @@ class ProductStock
      */
     private $productCategory;
 
-
     /**
      * Get id
      *
@@ -70,54 +55,6 @@ class ProductStock
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set productId
-     *
-     * @param integer $productId
-     *
-     * @return ProductStock
-     */
-    public function setProductId($productId)
-    {
-        $this->productId = $productId;
-
-        return $this;
-    }
-
-    /**
-     * Get productId
-     *
-     * @return int
-     */
-    public function getProductId()
-    {
-        return $this->productId;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     *
-     * @return ProductStock
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**
