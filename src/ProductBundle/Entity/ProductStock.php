@@ -3,6 +3,7 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Library\Base\BaseEntity;
 
 /**
  * ProductStock
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="lola_product_stock")
  * @ORM\Entity(repositoryClass="ProductBundle\Repository\ProductStockRepository")
  */
-class ProductStock
+class ProductStock extends BaseEntity
 {
     /**
      * @var int

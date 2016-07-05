@@ -3,8 +3,10 @@
 namespace ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\FOSRestController;
 
 class ProductController extends FOSRestController
@@ -12,7 +14,7 @@ class ProductController extends FOSRestController
     /**
      * @ApiDoc()
      * 
-     * @Get("/products", name="api_admin_get_products")
+     * @Get("/products", name="api_admin_get_products", options={ "method_prefix" = false })
     */
     public function getProductsAction(Request $request)
     {
@@ -30,7 +32,7 @@ class ProductController extends FOSRestController
     /**
      * @ApiDoc()
      * 
-     * @Get("/product/{id}", defaults={"id": null}, name="api_admin_get_product")
+     * @Get("/product/{id}", defaults={"id": null}, name="api_admin_get_product", options={ "method_prefix" = false })
     */
     public function getProductAction($id)
     {
@@ -44,24 +46,10 @@ class ProductController extends FOSRestController
     }
     
      /**
-     * "delete_product"
-     * [DELETE] /products/{id}
      * 
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     403 = "Returned when the product is not authorized to say hello",
-     *     404 = {
-     *       "Returned when the product is not found",
-     *       "Returned when something else is not found"
-     *     }
-     *   }
-     * )
-     * @Annotations\View()
+     * @ApiDoc()
      * 
-     * @Annotations\QueryParam(name="id", requirements="\d+", nullable=true, description="Product ID")
-     * @return array
+     * @Delete("/product/{id}", name="api_admin_delete_product", options={ "method_prefix" = false })
      */ 
     public function deleteProductAction($id)
     {
@@ -74,7 +62,13 @@ class ProductController extends FOSRestController
 
         // Use deleteEntity function in app.service to delete this entity        
         $this->get('app.service')->deleteEntity($product);
-
+        
+        // There is a debate if this should be a 404 or a 204
+        // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
+        return $this->routeRedirectView(
+            'api_admin_get_products', 
+            array(), 
+            Response::HTTP_NO_CONTENT
+            );        
     } 
-    
 }

@@ -25,9 +25,9 @@ class ProductRepository extends EntityRepository
                 . 'product.description,'
                 . 'product.price'
                 )
+            ->where('product.deleted = false')
             ->orderBy($order);
         
         return $qb->getQuery()->getScalarResult();
     }
-
 }

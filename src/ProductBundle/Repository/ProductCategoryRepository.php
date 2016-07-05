@@ -24,6 +24,7 @@ class ProductCategoryRepository extends \Doctrine\ORM\EntityRepository
                   'category.id, '
                 . 'category.name'
                 )
+            ->where('category.deleted = false')
             ->orderBy($order);
         
         return $qb->getQuery()->getScalarResult();

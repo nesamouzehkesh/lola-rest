@@ -1,0 +1,6 @@
+services:    
+    app.service:
+        class: AppBundle\Service\AppService
+        arguments: 
+            - "@translator.default"
+            - "@doctrine.orm.default_entity_manager"
