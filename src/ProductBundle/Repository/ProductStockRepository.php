@@ -26,9 +26,12 @@ class ProductStockRepository extends EntityRepository
                 . 'p.price'
                 )
             ->join('ps.product', 'p')
-            ->where('ps.productCategory = :id')
-            ->setParameter('id', $id)
             ->orderBy($order);
+        
+        if (null !== $id) {
+            $qb->where('ps.productCategory = :id')
+                ->setParameter('id', $id);
+        }
         
         return $qb->getQuery()->getScalarResult();
     }    

@@ -1,7 +1,6 @@
 product_bundle:
     resource: "@ProductBundle/Resources/config/routes.yml"    
-    prefix: /api/product
-    type: rest
+    prefix: /
 
 app:
     resource: "@AppBundle/Controller/"
