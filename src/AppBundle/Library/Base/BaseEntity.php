@@ -24,7 +24,7 @@ class BaseEntity
      */
     public function __construct()
     {
-        $this->deleted = 0;
+        $this->deleted = false;
     }
 
     /**

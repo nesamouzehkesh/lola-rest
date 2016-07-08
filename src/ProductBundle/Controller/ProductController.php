@@ -71,4 +71,72 @@ class ProductController extends FOSRestController
             Response::HTTP_NO_CONTENT
             );        
     } 
+    
+    /**
+     * "add_product"
+     * [ADD] /products/{id}
+     * 
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     403 = "Returned when the product is not authorized to say hello",
+     *     404 = {
+     *       "Returned when the product is not found",
+     *       "Returned when something else is not found"
+     *     }
+     *   }
+     * )
+     * @Annotations\View()
+     * 
+     * @Annotations\QueryParam(name="id", requirements="\d+", nullable=true, description="Product ID")
+     * @return array
+     */ 
+     public function addProductAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get front end data
+        $data = $request->request->get('product');
+        
+        // Create a new Product object
+        $product = new Product();
+        $product->setName($data['name']);
+        $product->setDescription($data['description']);
+        $product->setPrice($data['price']);
+       
+        
+        
+        // Persist $product
+        $em->persist($product);
+        
+        foreach ($data['products'] as $productData) {
+            // Get a refrence to product entity. Note: that $product is not a 
+            // Product object
+            $product = $this->getDoctrine()
+                ->getManager()
+                ->getReference('ProductBundle:Product', $productData['id']);
+            
+            // Create a new ProductStock object (ProductStock table is the same as 
+            //Products-Categories table in the database but we have created it by 
+            //ourselves not letting Doctrine to create it for us during the 
+            //many-to-many bidirectional table creation. 
+            $productStock = new ProductStock();
+            $productStock->setCount($productData['count']);
+            $productStock->setColour($productData['colour']);
+            
+            
+            // Add this $productStocks to $product
+            $product->addProductStock($productStock);
+            
+            // Persist $productStock
+            $em->persist($productStock);
+        }
+        $em->flush();
+        
+        //You can expose whatever you want to your frontend here, such as productId in this case
+        return array(
+            'id' => $product->getId()
+            );
+    }
 }
+

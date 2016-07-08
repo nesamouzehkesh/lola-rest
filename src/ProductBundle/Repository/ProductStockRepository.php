@@ -16,7 +16,7 @@ class ProductStockRepository extends EntityRepository
      * 
      * @return type
      */
-    public function getProducts($id, $order = 'p.id')
+    public function getProducts($id = null, $order = 'p.id')
     {
         $qb = $this->createQueryBuilder('ps')
             ->select(
