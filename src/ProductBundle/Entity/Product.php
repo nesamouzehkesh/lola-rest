@@ -52,6 +52,8 @@ class Product extends BaseEntity
      */
     public function __construct()
     {
+        parent::__construct();
+        
         $this->productStocks = new \Doctrine\Common\Collections\ArrayCollection();
     }
 

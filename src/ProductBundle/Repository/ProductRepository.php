@@ -16,16 +16,16 @@ class ProductRepository extends EntityRepository
      * 
      * @return type
      */
-    public function getProducts($order = 'product.id')
+    public function getProducts($order = 'p.id')
     {
-        $qb = $this->createQueryBuilder('product')
+        $qb = $this->createQueryBuilder('p')
             ->select(
-                  'product.id, '
-                . 'product.name, '
-                . 'product.description,'
-                . 'product.price'
+                  'p.id, '
+                . 'p.name, '
+                . 'p.description,'
+                . 'p.price'
                 )
-            ->where('product.deleted = false')
+            ->where('p.deleted = false')
             ->orderBy($order);
         
         return $qb->getQuery()->getScalarResult();

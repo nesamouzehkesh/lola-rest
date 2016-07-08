@@ -7,7 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Delete;
+use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
+use ProductBundle\Entity\Product;
 
 class ProductController extends FOSRestController
 {
@@ -23,8 +25,8 @@ class ProductController extends FOSRestController
         $products = $this
             ->getDoctrine()
             ->getEntityManager()
-            ->getRepository('ProductBundle:ProductStock')
-            ->getProducts($id);
+            ->getRepository('ProductBundle:Product')//ProductStock
+            ->getProducts();//$id
         
         return $products;
     }
@@ -73,42 +75,29 @@ class ProductController extends FOSRestController
     } 
     
     /**
-     * "add_product"
-     * [ADD] /products/{id}
+     * @ApiDoc()
      * 
-     * @ApiDoc(
-     *   resource = true,
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     403 = "Returned when the product is not authorized to say hello",
-     *     404 = {
-     *       "Returned when the product is not found",
-     *       "Returned when something else is not found"
-     *     }
-     *   }
-     * )
-     * @Annotations\View()
-     * 
-     * @Annotations\QueryParam(name="id", requirements="\d+", nullable=true, description="Product ID")
-     * @return array
+     * @Post("/product", name="api_admin_post_product", options={ "method_prefix" = false })
      */ 
-     public function addProductAction(Request $request)
+    public function addProductAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         // Get front end data
         $data = $request->request->get('product');
+        //Note: you can not use $request->query->get('product') since your data
+        // is sent to this api by POST method not GET
+        //$data = $request->query->get('product');
         
         // Create a new Product object
         $product = new Product();
         $product->setName($data['name']);
         $product->setDescription($data['description']);
         $product->setPrice($data['price']);
-       
-        
         
         // Persist $product
         $em->persist($product);
         
+        /*
         foreach ($data['products'] as $productData) {
             // Get a refrence to product entity. Note: that $product is not a 
             // Product object
@@ -131,11 +120,14 @@ class ProductController extends FOSRestController
             // Persist $productStock
             $em->persist($productStock);
         }
+        */
+        
         $em->flush();
         
         //You can expose whatever you want to your frontend here, such as productId in this case
         return array(
-            'id' => $product->getId()
+            'id' => $product->getId(),
+            'name' => $product->getName()
             );
     }
 }
