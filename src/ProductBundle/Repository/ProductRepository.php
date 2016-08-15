@@ -30,4 +30,23 @@ class ProductRepository extends EntityRepository
         
         return $qb->getQuery()->getScalarResult();
     }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getProduct($id)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select(
+                  'p.id, '
+                . 'p.name, '
+                . 'p.description,'
+                . 'p.price'
+                )
+            ->where('p.id = :id')
+            ->setParameter('id', $id);
+        
+        return $qb->getQuery()->getSingleResult();
+    }    
 }

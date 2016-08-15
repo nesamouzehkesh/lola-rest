@@ -29,6 +29,7 @@ class ProductController extends FOSRestController
             ->getProducts();//$id
         
         return $products;
+        
     }
 
     /**
@@ -42,7 +43,7 @@ class ProductController extends FOSRestController
             ->getDoctrine()
             ->getEntityManager()
             ->getRepository('ProductBundle:Product')
-            ->find($id);
+            ->getProduct($id);
         
         return $product;
     }
@@ -79,17 +80,23 @@ class ProductController extends FOSRestController
      * 
      * @Post("/product", name="api_admin_post_product", options={ "method_prefix" = false })
      */ 
-    public function addProductAction(Request $request)
+    public function postProductAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         // Get front end data
         $data = $request->request->get('product');
         //Note: you can not use $request->query->get('product') since your data
-        // is sent to this api by POST method not GET
+        // // is sent to this api by POST method not GET
         //$data = $request->query->get('product');
         
-        // Create a new Product object
-        $product = new Product();
+        if (isset($data['id'])) {
+            // Find a product for edit
+            $product = $em->getRepository('ProductBundle:Product')->find($data['id']);
+        } else {
+            // Create a new Product object for add
+            $product = new Product();
+        }
+
         $product->setName($data['name']);
         $product->setDescription($data['description']);
         $product->setPrice($data['price']);
