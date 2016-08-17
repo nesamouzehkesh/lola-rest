@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\FOSRestController;
 use ProductBundle\Entity\ProductCategory;
 
@@ -32,5 +31,21 @@ class CategoryController extends FOSRestController
             ->getCategories();
         
         return $categories;
+    }
+    
+    /**
+     * @ApiDoc()
+     * 
+     * @Get("/category/{id}", defaults={"id": null}, name="api_admin_get_category", options={ "method_prefix" = false })
+    */
+    public function getCategoryAction($id)
+    {
+        $category = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ProductBundle:ProductCategory')
+            ->getCategory($id);
+        
+        return $category;
     }
 }

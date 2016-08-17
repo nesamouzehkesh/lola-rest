@@ -29,4 +29,17 @@ class ProductCategoryRepository extends \Doctrine\ORM\EntityRepository
         
         return $qb->getQuery()->getScalarResult();
     }
+    
+    public function getCategory($id)
+    {
+        $qb = $this->createQueryBuilder('category')
+            ->select(
+                  'category.id, '
+                . 'category.name '
+                )
+            ->where('category.id = :id')
+            ->setParameter('id', $id);
+        
+        return $qb->getQuery()->getSingleResult();
+    }     
 }
