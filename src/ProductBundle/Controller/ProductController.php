@@ -20,13 +20,15 @@ class ProductController extends FOSRestController
     */
     public function getProductsAction(Request $request)
     {
-        $id = $request->query->get('id', null);
+        // Search criteria
+        // Get all query parameters
+        $criteria = $request->query->all();
         
         $products = $this
             ->getDoctrine()
             ->getEntityManager()
-            ->getRepository('ProductBundle:Product')//ProductStock
-            ->getProducts();//$id
+            ->getRepository('ProductBundle:Product')
+            ->getProducts($criteria);
         
         return $products;
         

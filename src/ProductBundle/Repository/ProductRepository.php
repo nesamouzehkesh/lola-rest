@@ -16,7 +16,7 @@ class ProductRepository extends EntityRepository
      * 
      * @return type
      */
-    public function getProducts($order = 'p.id')
+    public function getProducts($criteria = null, $order = 'p.id')
     {
         $qb = $this->createQueryBuilder('p')
             ->select(
@@ -27,6 +27,14 @@ class ProductRepository extends EntityRepository
                 )
             ->where('p.deleted = false')
             ->orderBy($order);
+        
+        // Search by name if searchText is provided
+        if (null !== $criteria) {
+            if (isset($criteria['searchText']) && $criteria['searchText'] !== '') {
+                $qb->andWhere('p.name LIKE :searchText')
+                    ->setParameter('searchText', '%'. $criteria['searchText'] .'%');
+            }                
+        }
         
         return $qb->getQuery()->getScalarResult();
     }
