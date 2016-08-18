@@ -1,0 +1,5 @@
+page:
+    resource: PageBundle\Controller\PageController
+    type:     rest
+    prefix:   /api/admin/page
+    

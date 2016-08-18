@@ -1,7 +1,16 @@
+page:
+    resource: "@PageBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 product_bundle:
     resource: "@ProductBundle/Resources/config/routes.yml"    
     prefix: /
 
+page_bundle:
+    resource: "@PageBundle/Resources/config/routes.yml"    
+    prefix: /
+    
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
