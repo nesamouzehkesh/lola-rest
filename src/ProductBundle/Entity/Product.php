@@ -47,6 +47,7 @@ class Product extends BaseEntity
      * @ORM\OneToMany(targetEntity="ProductStock", mappedBy="product")
      */
     private $productStocks;
+    
     /**
      * Constructor
      */

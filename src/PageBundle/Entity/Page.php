@@ -5,7 +5,6 @@ namespace PageBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Library\Base\BaseEntity;
 
-
 /**
  * Page
  *
