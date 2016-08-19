@@ -1,0 +1,5 @@
+product:
+    resource: ThemeBundle\Controller\ThemeController
+    type:     rest
+    prefix:   /api/admin/theme
+    
