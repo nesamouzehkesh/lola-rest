@@ -4,14 +4,12 @@ namespace ProductBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations\Get;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Delete;
+use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use ProductBundle\Entity\ProductCategory;
-
 
 class CategoryController extends FOSRestController
 {
@@ -48,4 +46,70 @@ class CategoryController extends FOSRestController
         
         return $category;
     }
+    
+    /**
+     * 
+     * @ApiDoc()
+     * 
+     * @Delete("/category/{id}", name="api_admin_delete_category", options={ "method_prefix" = false })
+     */ 
+    public function deleteCategoryAction($id)
+    {
+        // Get a category from category service. 
+        $category = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ProductBundle:ProductCategory')
+            ->find($id);
+
+        // Use deleteEntity function in app.service to delete this entity        
+        $this->get('app.service')->deleteEntity($category);
+        
+        // There is a debate if this should be a 404 or a 204
+        // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
+        return $this->routeRedirectView(
+            'api_admin_get_categories', 
+            array(), 
+            Response::HTTP_NO_CONTENT
+            );        
+    } 
+    
+    /**
+     * @ApiDoc()
+     * 
+     * @Post("/category", name="api_admin_post_category", options={ "method_prefix" = false })
+     */ 
+    public function postCategoryAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get front end data
+        $data = $request->request->get('category');
+        //Note: you can not use $request->query->get('category') since your data
+        // // is sent to this api by POST method not GET
+        //$data = $request->query->get('category');
+        
+        if (isset($data['id'])) {
+            // Find a category for edit
+            $category = $em->getRepository('ProductBundle:ProductCategory')->find($data['id']);
+        } else {
+            // Create a new Category object for add
+            $category = new Category();
+        }
+
+        $category->setName($data['name']);
+        $category->setDescription($data['description']);
+        
+        // Persist $category
+        $em->persist($category);
+        
+        $em->flush();
+        
+        //You can expose whatever you want to your frontend here, such as categoryId in this case
+        return array(
+            'id' => $category->getId(),
+            'name' => $category->getName()
+            );
+    }
 }
+
+
