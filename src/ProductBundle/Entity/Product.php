@@ -26,7 +26,7 @@ class Product extends BaseEntity
     /**
      * @var int
      *
-     * @ORM\Column(name="brandId", type="integer")
+     * @ORM\Column(name="brandId", type="integer", nullable=true)
      */
     private $brandId;
 
@@ -47,21 +47,21 @@ class Product extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="features", type="text")
+     * @ORM\Column(name="features", type="text", nullable=true)
      */
     private $features;
     
      /**
      * @var string
      *
-     * @ORM\Column(name="originalPrice", type="string", length=255)
+     * @ORM\Column(name="originalPrice", type="string", length=255, nullable=true)
      */
     private $originalPrice;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="string", length=255)
+     * @ORM\Column(name="price", type="string", length=255, nullable=true)
      */
     private $price;
 
