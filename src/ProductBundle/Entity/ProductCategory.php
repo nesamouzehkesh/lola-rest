@@ -21,20 +21,6 @@ class ProductCategory extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="count", type="string", length=255)
-     */
-    private $count;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="colour", type="string", length=255)
-     */
-    private $colour;
     
     /**
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="productCategories")
@@ -57,54 +43,6 @@ class ProductCategory extends BaseEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set count
-     *
-     * @param string $count
-     *
-     * @return ProductCategory
-     */
-    public function setCount($count)
-    {
-        $this->count = $count;
-
-        return $this;
-    }
-
-    /**
-     * Get count
-     *
-     * @return string
-     */
-    public function getCount()
-    {
-        return $this->count;
-    }
-
-    /**
-     * Set colour
-     *
-     * @param string $colour
-     *
-     * @return ProductCategory
-     */
-    public function setColour($colour)
-    {
-        $this->colour = $colour;
-
-        return $this;
-    }
-
-    /**
-     * Get colour
-     *
-     * @return string
-     */
-    public function getColour()
-    {
-        return $this->colour;
     }
 
     /**
