@@ -3,6 +3,7 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Library\Base\BaseEntity;
 
 /**
  * ProductCategory
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="lola_product_category")
  * @ORM\Entity(repositoryClass="ProductBundle\Repository\ProductCategoryRepository")
  */
-class ProductCategory
+class ProductCategory extends BaseEntity
 {
     /**
      * @var int
@@ -24,13 +25,29 @@ class ProductCategory
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="count", type="string", length=255)
      */
-    private $name;
-    
-     // ...
+    private $count;
+
     /**
-     * @ORM\OneToMany(targetEntity="ProductStock", mappedBy="productCategory")
+     * @var string
+     *
+     * @ORM\Column(name="colour", type="string", length=255)
      */
-    private $productStocks;
-}
+    private $colour;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="productCategories")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     */
+    private $product;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="productCategories")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
+
+}  
+
+    

@@ -25,24 +25,29 @@ class ProductCategory extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="count", type="string", length=255)
      */
-    private $name;
+    private $count;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="colour", type="string", length=255)
+     */
+    private $colour;
     
-     // ...
     /**
-     * @ORM\OneToMany(targetEntity="ProductStock", mappedBy="productCategory")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="productCategories")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
-    private $productStocks;
+    private $product;
+    
     /**
-     * Constructor
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="productCategories")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
-    public function __construct()
-    {
-        parent::__construct();
-        
-        $this->productStocks = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $category;
+
 
     /**
      * Get id
@@ -55,60 +60,98 @@ class ProductCategory extends BaseEntity
     }
 
     /**
-     * Set name
+     * Set count
      *
-     * @param string $name
+     * @param string $count
      *
      * @return ProductCategory
      */
-    public function setName($name)
+    public function setCount($count)
     {
-        $this->name = $name;
+        $this->count = $count;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get count
      *
      * @return string
      */
-    public function getName()
+    public function getCount()
     {
-        return $this->name;
+        return $this->count;
     }
 
     /**
-     * Add productStock
+     * Set colour
      *
-     * @param \ProductBundle\Entity\ProductStock $productStock
+     * @param string $colour
      *
      * @return ProductCategory
      */
-    public function addProductStock(\ProductBundle\Entity\ProductStock $productStock)
+    public function setColour($colour)
     {
-        $this->productStocks[] = $productStock;
+        $this->colour = $colour;
 
         return $this;
     }
 
     /**
-     * Remove productStock
+     * Get colour
      *
-     * @param \ProductBundle\Entity\ProductStock $productStock
+     * @return string
      */
-    public function removeProductStock(\ProductBundle\Entity\ProductStock $productStock)
+    public function getColour()
     {
-        $this->productStocks->removeElement($productStock);
+        return $this->colour;
     }
 
     /**
-     * Get productStocks
+     * Set product
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param \ProductBundle\Entity\Product $product
+     *
+     * @return ProductCategory
      */
-    public function getProductStocks()
+    public function setProduct(\ProductBundle\Entity\Product $product = null)
     {
-        return $this->productStocks;
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \ProductBundle\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \ProductBundle\Entity\Category $category
+     *
+     * @return ProductCategory
+     */
+    public function setCategory(\ProductBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \ProductBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

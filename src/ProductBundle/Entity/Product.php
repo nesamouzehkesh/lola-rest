@@ -21,6 +21,13 @@ class Product extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="brandId", type="integer")
+     */
+    private $brandId;
 
     /**
      * @var string
@@ -35,6 +42,20 @@ class Product extends BaseEntity
      * @ORM\Column(name="description", type="text")
      */
     private $description;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="features", type="text")
+     */
+    private $features;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="originalPrice", type="string", length=255)
+     */
+    private $originalPrice;
 
     /**
      * @var string
@@ -44,19 +65,10 @@ class Product extends BaseEntity
     private $price;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProductStock", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="ProductCategory", mappedBy="product")
      */
-    private $productStocks;
+    private $productCategories;
     
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        
-        $this->productStocks = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -66,6 +78,30 @@ class Product extends BaseEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set brandId
+     *
+     * @param integer $brandId
+     *
+     * @return Product
+     */
+    public function setBrandId($brandId)
+    {
+        $this->brandId = $brandId;
+
+        return $this;
+    }
+
+    /**
+     * Get brandId
+     *
+     * @return integer
+     */
+    public function getBrandId()
+    {
+        return $this->brandId;
     }
 
     /**
@@ -117,6 +153,54 @@ class Product extends BaseEntity
     }
 
     /**
+     * Set features
+     *
+     * @param string $features
+     *
+     * @return Product
+     */
+    public function setFeatures($features)
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * Get features
+     *
+     * @return string
+     */
+    public function getFeatures()
+    {
+        return $this->features;
+    }
+
+    /**
+     * Set originalPrice
+     *
+     * @param string $originalPrice
+     *
+     * @return Product
+     */
+    public function setOriginalPrice($originalPrice)
+    {
+        $this->originalPrice = $originalPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get originalPrice
+     *
+     * @return string
+     */
+    public function getOriginalPrice()
+    {
+        return $this->originalPrice;
+    }
+
+    /**
      * Set price
      *
      * @param string $price
@@ -141,36 +225,36 @@ class Product extends BaseEntity
     }
 
     /**
-     * Add productStock
+     * Add productCategory
      *
-     * @param \ProductBundle\Entity\ProductStock $productStock
+     * @param \ProductBundle\Entity\ProductCategory $productCategory
      *
      * @return Product
      */
-    public function addProductStock(\ProductBundle\Entity\ProductStock $productStock)
+    public function addProductCategory(\ProductBundle\Entity\ProductCategory $productCategory)
     {
-        $this->productStocks[] = $productStock;
+        $this->productCategories[] = $productCategory;
 
         return $this;
     }
 
     /**
-     * Remove productStock
+     * Remove productCategory
      *
-     * @param \ProductBundle\Entity\ProductStock $productStock
+     * @param \ProductBundle\Entity\ProductCategory $productCategory
      */
-    public function removeProductStock(\ProductBundle\Entity\ProductStock $productStock)
+    public function removeProductCategory(\ProductBundle\Entity\ProductCategory $productCategory)
     {
-        $this->productStocks->removeElement($productStock);
+        $this->productCategories->removeElement($productCategory);
     }
 
     /**
-     * Get productStocks
+     * Get productCategories
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProductStocks()
+    public function getProductCategories()
     {
-        return $this->productStocks;
+        return $this->productCategories;
     }
 }

@@ -9,7 +9,7 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
-use ProductBundle\Entity\ProductCategory;
+use ProductBundle\Entity\Category;
 
 class CategoryController extends FOSRestController
 {
@@ -25,7 +25,7 @@ class CategoryController extends FOSRestController
         $categories = $this
             ->getDoctrine()
             ->getEntityManager()
-            ->getRepository('ProductBundle:ProductCategory')
+            ->getRepository('ProductBundle:Category')
             ->getCategories();
         
         return $categories;
@@ -41,7 +41,7 @@ class CategoryController extends FOSRestController
         $category = $this
             ->getDoctrine()
             ->getEntityManager()
-            ->getRepository('ProductBundle:ProductCategory')
+            ->getRepository('ProductBundle:Category')
             ->getCategory($id);
         
         return $category;
@@ -59,7 +59,7 @@ class CategoryController extends FOSRestController
         $category = $this
             ->getDoctrine()
             ->getEntityManager()
-            ->getRepository('ProductBundle:ProductCategory')
+            ->getRepository('ProductBundle:Category')
             ->find($id);
 
         // Use deleteEntity function in app.service to delete this entity        
@@ -90,7 +90,7 @@ class CategoryController extends FOSRestController
         
         if (isset($data['id'])) {
             // Find a category for edit
-            $category = $em->getRepository('ProductBundle:ProductCategory')->find($data['id']);
+            $category = $em->getRepository('ProductBundle:Category')->find($data['id']);
         } else {
             // Create a new Category object for add
             $category = new Category();

@@ -3,14 +3,15 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Library\Base\BaseEntity;
 
 /**
- * Category
+ * ProductCategory
  *
- * @ORM\Table(name="category")
+ * @ORM\Table(name="lola_category")
  * @ORM\Entity(repositoryClass="ProductBundle\Repository\CategoryRepository")
  */
-class Category
+class Category extends BaseEntity
 {
     /**
      * @var int
@@ -27,71 +28,11 @@ class Category
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-
+    
+     // ...
     /**
-     * @var string
-     *
-     * @ORM\Column(name="season", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="ProductCategory", mappedBy="category")
      */
-    private $season;
-
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Category
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set season
-     *
-     * @param string $season
-     *
-     * @return Category
-     */
-    public function setSeason($season)
-    {
-        $this->season = $season;
-
-        return $this;
-    }
-
-    /**
-     * Get season
-     *
-     * @return string
-     */
-    public function getSeason()
-    {
-        return $this->season;
-    }
+    private $productCategories;
 }
-
+    
