@@ -3,6 +3,7 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Library\Base\BaseEntity;
 
 /**
@@ -69,7 +70,16 @@ class Product extends BaseEntity
      */
     private $productCategories;
     
-
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        
+        $this->productCategories = new ArrayCollection();
+    }
+    
     /**
      * Get id
      *

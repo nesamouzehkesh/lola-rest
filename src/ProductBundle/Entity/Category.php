@@ -3,6 +3,7 @@
 namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Library\Base\BaseEntity;
 
 /**
@@ -29,12 +30,21 @@ class Category extends BaseEntity
      */
     private $name;
     
-     // ...
     /**
      * @ORM\OneToMany(targetEntity="ProductCategory", mappedBy="category")
      */
     private $productCategories;
-
+    
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        
+        $this->productCategories = new ArrayCollection();
+    }
+    
     /**
      * Get id
      *

@@ -34,7 +34,6 @@ class ProductCategory extends BaseEntity
      */
     private $category;
 
-
     /**
      * Get id
      *
