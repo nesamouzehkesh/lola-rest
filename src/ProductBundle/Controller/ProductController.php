@@ -106,6 +106,22 @@ class ProductController extends FOSRestController
         // Persist $product
         $em->persist($product);
         
+        
+       foreach ($data['category'] as $key => $value) {
+       $categoryId = $value[id];
+       
+       $category = $em
+       ->getRepository('ProductBundle:Category')
+       ->find($categoryId);
+       
+       $productCategory = new ProductCategory();
+        
+       $productCategory->setProduct($product);
+       $productCategory->setCategory($category);
+       
+       $em->persist($productCategory);
+       } 
+        
         /*
         foreach ($data['products'] as $productData) {
             // Get a refrence to product entity. Note: that $product is not a 
