@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use ProductBundle\Entity\Product;
+use ProductBundle\Entity\ProductCategory;
 
 class ProductController extends FOSRestController
 {
@@ -103,37 +104,25 @@ class ProductController extends FOSRestController
         $product->setDescription($data['description']);
         $product->setPrice($data['price']);
         
+        foreach ($data['category'] as $item) {
+            $category = $em
+                ->getRepository('ProductBundle:Category')
+                ->find($item['id']);
+
+            $productCategory = new ProductCategory();
+            $productCategory->setProduct($product);
+            $productCategory->setCategory($category);
+            
+            // Persist $productCategory
+            $em->persist($productCategory);
+        } 
+        
         // Persist $product
         $em->persist($product);
-        
-        /*
-        foreach ($data['products'] as $productData) {
-            // Get a refrence to product entity. Note: that $product is not a 
-            // Product object
-            $product = $this->getDoctrine()
-                ->getManager()
-                ->getReference('ProductBundle:Product', $productData['id']);
-            
-            // Create a new ProductStock object (ProductStock table is the same as 
-            //Products-Categories table in the database but we have created it by 
-            //ourselves not letting Doctrine to create it for us during the 
-            //many-to-many bidirectional table creation. 
-            $productStock = new ProductStock();
-            $productStock->setCount($productData['count']);
-            $productStock->setColour($productData['colour']);
-            
-            
-            // Add this $productStocks to $product
-            $product->addProductStock($productStock);
-            
-            // Persist $productStock
-            $em->persist($productStock);
-        }
-        */
-        
         $em->flush();
         
-        //You can expose whatever you want to your frontend here, such as productId in this case
+        // You can expose whatever you want to your frontend here, such as 
+        // productId in this case
         return array(
             'id' => $product->getId(),
             'name' => $product->getName()
