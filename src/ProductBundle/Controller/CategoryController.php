@@ -97,7 +97,6 @@ class CategoryController extends FOSRestController
         }
 
         $category->setName($data['name']);
-        $category->setDescription($data['description']);
         
         // Persist $category
         $em->persist($category);
