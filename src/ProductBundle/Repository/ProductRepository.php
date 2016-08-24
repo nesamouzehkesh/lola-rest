@@ -18,7 +18,7 @@ class ProductRepository extends EntityRepository
      */
     public function getProducts($criteria = null, $order = 'p.id')
     {
-        $qb = $this->createQueryBuilder('p')
+       /* $qb = $this->createQueryBuilder('p')
             ->select(
                   'p.id, '
                 . 'p.name, '
@@ -26,7 +26,37 @@ class ProductRepository extends EntityRepository
                 . 'p.price'
                 )
             ->where('p.deleted = false')
-            ->orderBy($order);
+            ->orderBy($order); */
+        
+        //testing with a manual array for frontend product categories listing
+       
+        
+       $productsArray = array(
+                            array(
+                                    'id' => '1',
+                                    'name' => 'A',
+                                    'description' =>'a',
+                                    'categories' => array(
+                                                        array('id' => '23', 
+                                                              'name' => 'Cat1'
+                                                            ),
+                                                        array('id' => '24', 
+                                                              'name' => 'Cat2'
+                                                            )
+                                                    )
+                                ),
+                            array(
+                                    'id' => '2',
+                                    'name' => 'B',
+                                    'description' => 'b',
+                                    'categories' => array(
+                                                        array('id' => '17',
+                                                            'name' => 'Cat3'),
+                                                        array('id' => '17',
+                                                            'name' => 'Cat3')
+                                                    )
+                                )
+                        ); 
         
         // Search by name if searchText is provided
         if (null !== $criteria) {
@@ -45,7 +75,9 @@ class ProductRepository extends EntityRepository
              */               
         }
         
-        return $qb->getQuery()->getScalarResult();
+       // return $qb->getQuery()->getScalarResult();
+        
+        return $productsArray;
     }
     
     /**
