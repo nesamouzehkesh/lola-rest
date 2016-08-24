@@ -18,7 +18,8 @@ class ProductRepository extends EntityRepository
      */
     public function getProducts($criteria = null, $order = 'p.id')
     {
-       /* $qb = $this->createQueryBuilder('p')
+
+        $qb = $this->createQueryBuilder('p')
             ->select(
                   'p.id, '
                 . 'p.name, '
@@ -26,7 +27,7 @@ class ProductRepository extends EntityRepository
                 . 'p.price'
                 )
             ->where('p.deleted = false')
-            ->orderBy($order); */
+            ->orderBy($order);
         
         //testing with a manual array for frontend product categories listing
        
