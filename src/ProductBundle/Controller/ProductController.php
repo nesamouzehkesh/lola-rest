@@ -101,8 +101,11 @@ class ProductController extends FOSRestController
         }
 
         $product->setName($data['name']);
-        $product->setDescription($data['description']);
         $product->setPrice($data['price']);
+        
+        if (isset($data['description'])) {
+            $product->setDescription($data['description']);
+        }
         
         foreach ($data['category'] as $item) {
             $category = $em
