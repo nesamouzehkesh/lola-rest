@@ -265,6 +265,13 @@ class Product extends BaseEntity
      */
     public function getProductCategories()
     {
-        return $this->productCategories;
+        $productCategories = new ArrayCollection();
+        foreach ($this->productCategories as $pCategory) {
+            if (!$pCategory->isDeleted()) {
+                $productCategories->add($pCategory);
+            }
+        }
+        
+        return $productCategories;
     }
 }

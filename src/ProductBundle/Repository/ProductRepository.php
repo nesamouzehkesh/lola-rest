@@ -45,8 +45,8 @@ class ProductRepository extends EntityRepository
             */
         }         
         
-        $prodcuts = $qb->getQuery()->getScalarResult();
-        foreach ($prodcuts as $key => $product) {
+        $products = $qb->getQuery()->getScalarResult();
+        foreach ($products as $key => $product) {
             
             $qb = $this->getEntityManager()
                 ->createQueryBuilder()
@@ -60,10 +60,11 @@ class ProductRepository extends EntityRepository
                 ->setParameter('productId', $product['id']);
                 
             $categories = $qb->getQuery()->getScalarResult();
-            $prodcuts[$key]['categories'] = $categories;
+            $products[$key]['categories'] = $categories;
         }
 
-        return $prodcuts;
+        
+        return $products;
     }
     
     /**
@@ -117,6 +118,22 @@ class ProductRepository extends EntityRepository
             ->where('p.id = :id')
             ->setParameter('id', $id);
         
-        return $qb->getQuery()->getSingleResult();
+        $product = $qb->getQuery()->getSingleResult();
+        
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->from('ProductBundle:ProductCategory', 'pc')
+            ->select(
+                  'c.id, '
+                . 'c.name '
+                )
+            ->join('pc.category', 'c')    
+            ->where('c.deleted = false AND pc.product = :productId AND pc.deleted = false')
+            ->setParameter('productId', $product['id']);
+
+        $categories = $qb->getQuery()->getScalarResult();
+        $product['categories'] = $categories;
+        
+        return $product;
     }    
 }

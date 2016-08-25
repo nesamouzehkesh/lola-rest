@@ -92,9 +92,31 @@ class ProductController extends FOSRestController
         // // is sent to this api by POST method not GET
         //$data = $request->query->get('product');
         
+        if (!isset($data['categories'])) {
+            $data['categories'] = array();
+        }
+        
         if (isset($data['id'])) {
             // Find a product for edit
             $product = $em->getRepository('ProductBundle:Product')->find($data['id']);
+            // Get the id of the categories from the form selected in dropdown
+            $ids = array();
+            foreach ($data['categories'] as $key => $category) {  
+                // we need the category index to be same as the index for ids
+                // This $key will be used as $index
+                $ids[$key] = $category['id'];
+            }
+            
+            foreach ($product->getProductCategories() as $pCategory) {
+                $categoryId = $pCategory->getCategory()->getId();
+                if (in_array($categoryId, $ids)) {  
+                    $index = array_search($categoryId, $ids);
+                    // remove it from data category so we don't insert it again
+                    unset($data['categories'][$index]); 
+                } else {
+                    $this->get('app.service')->deleteEntity($pCategory);
+                }
+            }
         } else {
             // Create a new Product object for add
             $product = new Product();
@@ -107,7 +129,7 @@ class ProductController extends FOSRestController
             $product->setDescription($data['description']);
         }
         
-        foreach ($data['category'] as $item) {
+        foreach ($data['categories'] as $item) {
             $category = $em
                 ->getRepository('ProductBundle:Category')
                 ->find($item['id']);
