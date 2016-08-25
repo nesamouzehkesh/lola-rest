@@ -29,36 +29,6 @@ class ProductRepository extends EntityRepository
             ->where('p.deleted = false')
             ->orderBy($order);
         
-        //testing with a manual array for frontend product categories listing
-       
-        
-       $productsArray = array(
-                            array(
-                                    'id' => '1',
-                                    'name' => 'A',
-                                    'description' =>'a',
-                                    'categories' => array(
-                                                        array('id' => '23', 
-                                                              'name' => 'Cat1'
-                                                            ),
-                                                        array('id' => '24', 
-                                                              'name' => 'Cat2'
-                                                            )
-                                                    )
-                                ),
-                            array(
-                                    'id' => '2',
-                                    'name' => 'B',
-                                    'description' => 'b',
-                                    'categories' => array(
-                                                        array('id' => '17',
-                                                            'name' => 'Cat3'),
-                                                        array('id' => '17',
-                                                            'name' => 'Cat3')
-                                                    )
-                                )
-                        ); 
-        
         // Search by name if searchText is provided
         if (null !== $criteria) {
             if (isset($criteria['searchText']) && $criteria['searchText'] !== '') {
@@ -72,13 +42,63 @@ class ProductRepository extends EntityRepository
                     ->andWhere('p.name :searchText')
                     ->setParameter('searchText', '%'. $criteria['searchText'] .'%');
             } 
-             * 
-             */               
+            */
+        }         
+        
+        $prodcuts = $qb->getQuery()->getScalarResult();
+        foreach ($prodcuts as $key => $product) {
+            
+            $qb = $this->getEntityManager()
+                ->createQueryBuilder()
+                ->from('ProductBundle:ProductCategory', 'pc')
+                ->select(
+                      'c.id, '
+                    . 'c.name '
+                    )
+                ->join('pc.category', 'c')    
+                ->where('c.deleted = false AND pc.product = :productId AND pc.deleted = false')
+                ->setParameter('productId', $product['id']);
+                
+            $categories = $qb->getQuery()->getScalarResult();
+            $prodcuts[$key]['categories'] = $categories;
         }
-        
-       // return $qb->getQuery()->getScalarResult();
-        
-        return $productsArray;
+
+        return $prodcuts;
+    }
+    
+    /**
+     * Testing with a manual array for frontend product categories listing
+     * 
+     * @return type
+     */
+    public function getStaticProducts($criteria = null)
+    {
+       return array(
+            array(
+                'id' => '1',
+                'name' => 'A',
+                'description' =>'a',
+                'categories' => array(
+                    array('id' => '23', 
+                          'name' => 'Cat1'
+                        ),
+                    array('id' => '24', 
+                          'name' => 'Cat2'
+                        )
+                    )
+                ),
+            array(
+                'id' => '2',
+                'name' => 'B',
+                'description' => 'b',
+                'categories' => array(
+                    array('id' => '17',
+                        'name' => 'Cat3'),
+                    array('id' => '17',
+                        'name' => 'Cat3')
+                )
+            )
+        ); 
     }
     
     /**
