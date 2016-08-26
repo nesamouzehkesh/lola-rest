@@ -92,29 +92,32 @@ class ProductController extends FOSRestController
         // // is sent to this api by POST method not GET
         //$data = $request->query->get('product');
         
-        if (!isset($data['categories'])) {
+        if (!isset($data['categories'])) { //because if user does not select any category, there will be an error
             $data['categories'] = array();
         }
         
-        if (isset($data['id'])) {
-            // Find a product for edit
+        if (isset($data['id'])) { //if it is editing and not adding a new item
+            // Find that product for editing
             $product = $em->getRepository('ProductBundle:Product')->find($data['id']);
-            // Get the id of the categories from the form selected in dropdown
+            // that product has categories; Get the ids of the categories selected in dropdown
             $ids = array();
-            foreach ($data['categories'] as $key => $category) {  
+            foreach ($data['categories'] as $key => $category) {  //current categories (before and now)
                 // we need the category index to be same as the index for ids
                 // This $key will be used as $index
                 $ids[$key] = $category['id'];
             }
             
-            foreach ($product->getProductCategories() as $pCategory) {
+            foreach ($product->getProductCategories() as $pCategory) { //from ProductCategory table
                 $categoryId = $pCategory->getCategory()->getId();
                 if (in_array($categoryId, $ids)) {  
-                    $index = array_search($categoryId, $ids);
+                    $index = array_search($categoryId, $ids); //returns the index of the searched-and-found element
                     // remove it from data category so we don't insert it again
                     unset($data['categories'][$index]); 
                 } else {
-                    $this->get('app.service')->deleteEntity($pCategory);
+                    $this->get('app.service')->deleteEntity($pCategory); //if a categpry number exists in the 
+                    //ProductCategory table that is not among the $data[categories] (in the $ids array) then 
+                    //you have to remove it from the ProductCategory table. Remember: $ids array is the only
+                    //set of categories that a product should have...
                 }
             }
         } else {
