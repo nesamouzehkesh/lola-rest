@@ -35,15 +35,12 @@ class ProductRepository extends EntityRepository
                 $qb->andWhere('p.name LIKE :searchText')
                     ->setParameter('searchText', '%'. $criteria['searchText'] .'%');
             }
-            /*
             if (isset($criteria['category']) && intval($criteria['category']) !== 0) {
-                
-                $qb->
-                    ->andWhere('p.name :searchText')
-                    ->setParameter('searchText', '%'. $criteria['searchText'] .'%');
+                $qb->join('p.productCategories', 'pc')
+                    ->andWhere('pc.category = :categoryId AND pc.deleted = 0')
+                    ->setParameter('categoryId', $criteria['category']);
             } 
-            */
-        }         
+        }     
         
         $products = $qb->getQuery()->getScalarResult();
         foreach ($products as $key => $product) {
