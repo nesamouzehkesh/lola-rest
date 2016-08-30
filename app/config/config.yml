@@ -6,6 +6,7 @@ imports:
     - { resource: "@ProductBundle/Resources/config/services.yml" }
     - { resource: "@PageBundle/Resources/config/services.yml" }
     - { resource: "@ThemeBundle/Resources/config/services.yml" }
+    - { resource: "@LabelBundle/Resources/config/services.yml" }
     
 
 # Put parameters here that don't need to change on each machine where the app is deployed
