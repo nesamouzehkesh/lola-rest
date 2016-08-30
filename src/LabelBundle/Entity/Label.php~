@@ -9,7 +9,7 @@ use AppBundle\Library\Base\BaseEntity;
 /**
  * Label
  *
- * @ORM\Table(name="lola_entity")
+ * @ORM\Table(name="lola_label")
  * @ORM\Entity(repositoryClass="LabelBundle\Repository\LabelRepository")
  */
 class Label extends BaseEntity
@@ -188,20 +188,5 @@ class Label extends BaseEntity
         $this->labelRelations->removeElement($labelRelation);
     }
 
-    /**
-     * Get labelRelations
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getlabelRelations()
-    {
-        $labelRelations = new ArrayCollection();
-        foreach ($this->labelRelations as $lRelation) {
-            if (!$lRelation->isDeleted()) {
-                $labelRelations->add($lRelation);
-            }
-        }
-        
-        return $labelRelations;
-    }
+    
 }

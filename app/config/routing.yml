@@ -15,6 +15,10 @@ theme_bundle:
     resource: "@ThemeBundle/Resources/config/routes.yml"    
     prefix: /
     
+label_bundle:
+    resource: "@LabelBundle/Resources/config/routes.yml"    
+    prefix: /    
+    
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

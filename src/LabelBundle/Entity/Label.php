@@ -188,20 +188,15 @@ class Label extends BaseEntity
         $this->labelRelations->removeElement($labelRelation);
     }
 
+    
+
     /**
      * Get labelRelations
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getlabelRelations()
+    public function getLabelRelations()
     {
-        $labelRelations = new ArrayCollection();
-        foreach ($this->labelRelations as $lRelation) {
-            if (!$lRelation->isDeleted()) {
-                $labelRelations->add($lRelation);
-            }
-        }
-        
-        return $labelRelations;
+        return $this->labelRelations;
     }
 }
