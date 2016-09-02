@@ -51,6 +51,41 @@ class LabelController extends FOSRestController
         return $label;
     }
 
-    
+    /**
+     * @ApiDoc()
+     * 
+     * @Post("/label", name="api_admin_post_label", options={ "method_prefix" = false })
+     */ 
+    public function postLabelAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get front end data
+        $data = $request->request->get('label');
+        //Note: you can not use $request->query->get('theme') since your data
+        // // is sent to this api by POST method not GET
+        //$data = $request->query->get('theme');
+        
+        if (isset($data['id'])) {
+            // Find a product for edit
+            $label = $em->getRepository('LabelBundle:Label')->find($data['id']);
+        } else {
+            // Create a new Theme object for add
+            $label = new Label();
+        }
+        
+        $label->setName($data['name']);
+        $label->setDescription($data['description']);
+        
+        // Persist $theme
+        $em->persist($label);
+        
+        $em->flush();
+        
+        //You can expose whatever you want to your frontend here, such as themeId in this case
+        return array(
+            'name' => $label->getName(),
+            'description' => $label->getDescription()
+            );
+    }
 }
 
