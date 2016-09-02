@@ -34,6 +34,22 @@ class LabelController extends FOSRestController
         return $labels;
         
     }
+    
+     /**
+     * @ApiDoc()
+     * 
+     * @Get("/label/{id}", defaults={"id": null}, name="api_admin_get_label", options={ "method_prefix" = false })
+    */
+    public function getLabelAction($id)
+    {
+        $label = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('LabelBundle:Label')
+            ->getLabel($id);
+        
+        return $label;
+    }
 
     
 }

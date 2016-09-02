@@ -33,7 +33,7 @@ class ProductRepository extends EntityRepository
         if (null !== $criteria) {
             if (isset($criteria['searchText']) && $criteria['searchText'] !== '') {
                 $qb->andWhere('p.name LIKE :searchText')
-                    ->setParameter('searchText', '%'. $criteria['searchText'] .'%');
+                    ->setParameter('searchText', '%'. $criteria['searchText'] . '%');
             }
             if (isset($criteria['category']) && intval($criteria['category']) !== 0) {
                 $qb->join('p.productCategories', 'pc')

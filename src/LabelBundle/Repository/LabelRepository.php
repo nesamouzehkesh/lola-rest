@@ -12,22 +12,42 @@ use Doctrine\ORM\EntityRepository;
 class LabelRepository extends EntityRepository
 {
     /**
+*
+* @param type $criteria
+* @return type
+*/
+    public function getLabels($criteria = null) {
+
+    $qb = $this->createQueryBuilder('label')
+        ->select(
+            'label.id, '
+           .'label.name, '
+           .'label.description ' 
+            )
+            ->where('label.deleted = false');
+
+    $labels = $qb->getQuery()->getScalarResult();
+
+    return $labels;
+    }
+    
+     /**
      * 
      * @return type
      */
-    public function getLabels($order = 'lablel.id')
+    public function getLabel($id)
     {
-
-        $qb = $this->createQueryBuilder('label')
+        $qb = $this->createQueryBuilder('l')
             ->select(
-                  'label.name, '
-                . 'label.description '
+                  'l.id, '
+                . 'l.name, '
+                . 'l.description'
                 )
-            ->where('label.deleted = false')
-            ->orderBy($order);
+            ->where('l.id = :id')
+            ->setParameter('id', $id);
         
-        $labels = $qb->getQuery()->getScalarResult();
+        $label = $qb->getQuery()->getSingleResult();
         
-        return $labels;
-    }
+        return $label;
+    }    
 }

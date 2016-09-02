@@ -1,4 +1,4 @@
-page:
+label:
     resource: LabelBundle\Controller\LabelController
     type:     rest
     prefix:   /api/admin/label
