@@ -58,6 +58,21 @@ class ProductRepository extends EntityRepository
                 
             $categories = $qb->getQuery()->getScalarResult();
             $products[$key]['categories'] = $categories;
+
+            
+            $qb = $this->getEntityManager()
+                ->createQueryBuilder()
+                ->from('LabelBundle:LabelRelation', 'lr')
+                ->select(
+                      'l.id, '
+                    . 'l.name '
+                    )
+                ->join('lr.label', 'l')    
+                ->where('lr.deleted = false AND lr.entityId = :entityId AND lr.entityName = :entityName')
+                ->setParameter('entityId', $product['id'])
+                ->setParameter('entityName', 'product');
+
+            $products[$key]['labels'] = $qb->getQuery()->getScalarResult();            
         }
 
         
@@ -117,6 +132,7 @@ class ProductRepository extends EntityRepository
         
         $product = $qb->getQuery()->getSingleResult();
         
+        // 
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->from('ProductBundle:ProductCategory', 'pc')
@@ -130,6 +146,22 @@ class ProductRepository extends EntityRepository
 
         $categories = $qb->getQuery()->getScalarResult();
         $product['categories'] = $categories;
+        
+        
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->from('LabelBundle:LabelRelation', 'lr')
+            ->select(
+                  'l.id, '
+                . 'l.name '
+                )
+            ->join('lr.label', 'l')    
+            ->where('lr.deleted = false AND lr.entityId = :entityId AND lr.entityName = :entityName')
+            ->setParameter('entityId', $product['id'])
+            ->setParameter('entityName', 'product');
+
+        $product['labels'] = $qb->getQuery()->getScalarResult();
+        
         
         return $product;
     }    

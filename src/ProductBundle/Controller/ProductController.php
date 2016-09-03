@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use ProductBundle\Entity\Product;
 use ProductBundle\Entity\ProductCategory;
+use LabelBundle\Entity\LabelRelation;
 
 class ProductController extends FOSRestController
 {
@@ -95,6 +96,9 @@ class ProductController extends FOSRestController
         if (!isset($data['categories'])) { //because if user does not select any category, there will be an error
             $data['categories'] = array();
         }
+        if (!isset($data['labels'])) { //because if user does not select any label, there will be an error
+            $data['labels'] = array();
+        }
         
         if (isset($data['id'])) { //if it is editing and not adding a new item
             // Find that product for editing
@@ -141,12 +145,25 @@ class ProductController extends FOSRestController
             $productCategory->setProduct($product);
             $productCategory->setCategory($category);
             
-            // Persist $productCategory
             $em->persist($productCategory);
+        }
+            
+        foreach ($data['labels'] as $item) {
+            $label = $em
+                ->getRepository('LabelBundle:Label')
+                ->find($item['id']);
+
+            $labelRelation = new LabelRelation();
+            $labelRelation->setlabel($label);
+            $labelRelation->setEntityId($product->getId());
+            $labelRelation->setEntityName('product');
+            
+            $em->persist($labelRelation);
         } 
-        
+
         // Persist $product
         $em->persist($product);
+        
         $em->flush();
         
         // You can expose whatever you want to your frontend here, such as 
