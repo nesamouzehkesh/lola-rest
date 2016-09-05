@@ -111,6 +111,14 @@ class ProductController extends FOSRestController
                 $ids[$key] = $category['id'];
             }
             
+            $lIds = array();
+            foreach ($data['labels'] as $key => $label) {  //current labels (before and now)
+                // we need the label index to be same as the index for lIds
+                // This $key will be used as $index
+                $lIds[$key] = $label['id'];
+            } 
+            
+            
             foreach ($product->getProductCategories() as $pCategory) { //from ProductCategory table
                 $categoryId = $pCategory->getCategory()->getId();
                 if (in_array($categoryId, $ids)) {  
@@ -124,6 +132,20 @@ class ProductController extends FOSRestController
                     //set of categories that a product should have...
                 }
             }
+            
+            $labelRelations = $em->getRepository('LabelBundle:LabelRelation')->
+                getEntityLabels($product->getId(),'product');
+            foreach ($labelRelations as $labelR) { //by means of LabelRelation repository
+             $labelId = $labelR->getId();
+             if (in_array($labelId, $lIds)) {  
+                 $index = array_search($labelId, $lIds); //returns the index of the searched-and-found element
+                 // remove it from data category so we don't insert it again
+                 unset($data['labels'][$index]); 
+             } else {
+                 $this->get('app.service')->deleteEntity($label); 
+             }
+         }
+            
         } else {
             // Create a new Product object for add
             $product = new Product();

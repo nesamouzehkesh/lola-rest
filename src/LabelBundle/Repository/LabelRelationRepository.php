@@ -10,4 +10,18 @@ namespace LabelBundle\Repository;
  */
 class LabelRelationRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * 
+     * @return type
+     */
+    public function getEntitylabels($id, $name)
+    {
+        $qb = $this->createQueryBuilder('el')
+            ->select('el')
+            ->where('el.deleted = false AND el.entityId = :id AND el.entityName = :name')
+            ->setParameter('id', $id)
+            ->setParameter('name', $name);
+            
+        return $qb->getQuery()->getResult();
+    }
 }
