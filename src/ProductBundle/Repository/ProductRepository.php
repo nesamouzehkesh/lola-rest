@@ -24,13 +24,20 @@ class ProductRepository extends EntityRepository
                   'p.id, '
                 . 'p.name, '
                 . 'p.description,'
-                . 'p.price'
+                . 'p.price, '
+                . 'b.name as brand'
                 )
+            ->join('p.brand', 'b')
             ->where('p.deleted = false')
             ->orderBy($order);
         
+        
         // Search by name if searchText is provided
         if (null !== $criteria) {
+            if (isset($criteria['brand']) && intval($criteria['brand']) !== 0) {
+                $qb->andWhere('b.id = :brandId')
+                    ->setParameter('brandId', $criteria['brand']);
+            }
             if (isset($criteria['searchText']) && $criteria['searchText'] !== '') {
                 $qb->andWhere('p.name LIKE :searchText')
                     ->setParameter('searchText', '%'. $criteria['searchText'] . '%');
@@ -126,7 +133,7 @@ class ProductRepository extends EntityRepository
                 . 'p.name, '
                 . 'p.description,'
                 . 'p.price, '
-                . 'b. name as brand'
+                . 'b.name as brand'
                 )
             ->join('p.brand', 'b')
             ->where('p.id = :id')
