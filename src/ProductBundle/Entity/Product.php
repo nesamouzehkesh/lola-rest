@@ -71,6 +71,14 @@ class Product extends BaseEntity
     private $productCategories;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
+     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
+     */
+    private $brand;
+    
+    
+    
+    /**
      * 
      */
     public function __construct()
@@ -273,5 +281,30 @@ class Product extends BaseEntity
         }
         
         return $productCategories;
+    }
+
+
+    /**
+     * Set brand
+     *
+     * @param \ProductBundle\Entity\Brand $brand
+     *
+     * @return Product
+     */
+    public function setBrand(\ProductBundle\Entity\Brand $brand = null)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return \ProductBundle\Entity\Brand
+     */
+    public function getBrand()
+    {
+        return $this->brand;
     }
 }

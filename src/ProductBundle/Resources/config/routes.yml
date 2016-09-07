@@ -7,3 +7,8 @@ category:
     resource: ProductBundle\Controller\CategoryController
     type:     rest
     prefix:   /api/admin/category
+    
+brand:
+    resource: ProductBundle\Controller\BrandController
+    type:     rest
+    prefix:   /api/admin/brand    

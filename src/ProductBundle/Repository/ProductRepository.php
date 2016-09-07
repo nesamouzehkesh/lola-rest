@@ -125,8 +125,10 @@ class ProductRepository extends EntityRepository
                   'p.id, '
                 . 'p.name, '
                 . 'p.description,'
-                . 'p.price'
+                . 'p.price, '
+                . 'b. name as brand'
                 )
+            ->join('p.brand', 'b')
             ->where('p.id = :id')
             ->setParameter('id', $id);
         
