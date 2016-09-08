@@ -1,0 +1,141 @@
+<?php
+
+namespace CustomerBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Library\Base\BaseEntity;
+
+/**
+ * OrderDetail
+ *
+ * @ORM\Table(name="lola_order_detail")
+ * @ORM\Entity(repositoryClass="CustomerBundle\Repository\OrderDetailRepository")
+ */
+class OrderDetail extends BaseEntity
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="quantity", type="integer")
+     */
+    private $quantity;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="text")
+     */
+    private $comment;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=255)
+     */
+    private $status;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderDetails")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     */
+    private $order;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="orderDetails")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     */
+    private $product;
+    
+    
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set quantity
+     *
+     * @param integer $quantity
+     *
+     * @return OrderDetail
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Get quantity
+     *
+     * @return int
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     *
+     * @return OrderDetail
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return OrderDetail
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+}
+

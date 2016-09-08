@@ -101,5 +101,38 @@ class Brand extends BaseEntity
     {
         return $this->description;
     }
-}
 
+    /**
+     * Add product
+     *
+     * @param \ProductBundle\Entity\Product $product
+     *
+     * @return Brand
+     */
+    public function addProduct(\ProductBundle\Entity\Product $product)
+    {
+        $this->products[] = $product;
+
+        return $this;
+    }
+
+    /**
+     * Remove product
+     *
+     * @param \ProductBundle\Entity\Product $product
+     */
+    public function removeProduct(\ProductBundle\Entity\Product $product)
+    {
+        $this->products->removeElement($product);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+}

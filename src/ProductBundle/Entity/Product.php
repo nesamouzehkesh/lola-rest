@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Library\Base\BaseEntity;
 
+
 /**
  * Product
  *
@@ -75,6 +76,11 @@ class Product extends BaseEntity
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      */
     private $brand;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="CustomerBundle\Entity\OrderDetail", mappedBy="product")
+     */
+    private $orderDetails;
     
     
     
@@ -306,5 +312,39 @@ class Product extends BaseEntity
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    /**
+     * Add orderDetail
+     *
+     * @param \ProductBundle\Entity\OrderDetail $orderDetail
+     *
+     * @return Product
+     */
+    public function addOrderDetail(\ProductBundle\Entity\OrderDetail $orderDetail)
+    {
+        $this->orderDetails[] = $orderDetail;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderDetail
+     *
+     * @param \ProductBundle\Entity\OrderDetail $orderDetail
+     */
+    public function removeOrderDetail(\ProductBundle\Entity\OrderDetail $orderDetail)
+    {
+        $this->orderDetails->removeElement($orderDetail);
+    }
+
+    /**
+     * Get orderDetails
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderDetails()
+    {
+        return $this->orderDetails;
     }
 }

@@ -76,6 +76,11 @@ class Product extends BaseEntity
      */
     private $brand;
     
+    /**
+     * @ORM\OneToMany(targetEntity="OrderDetail", mappedBy="product")
+     */
+    private $orderDetails;
+    
     
     
     /**
@@ -283,4 +288,28 @@ class Product extends BaseEntity
         return $productCategories;
     }
 
+
+    /**
+     * Set brand
+     *
+     * @param \ProductBundle\Entity\Brand $brand
+     *
+     * @return Product
+     */
+    public function setBrand(\ProductBundle\Entity\Brand $brand = null)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return \ProductBundle\Entity\Brand
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
 }
