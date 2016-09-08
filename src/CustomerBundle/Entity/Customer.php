@@ -3,6 +3,7 @@
 namespace CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Library\Base\BaseEntity;
 
 /**
@@ -13,6 +14,9 @@ use AppBundle\Library\Base\BaseEntity;
  */
 class Customer extends BaseEntity
 {
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+    
     /**
      * @var int
      *
@@ -44,6 +48,13 @@ class Customer extends BaseEntity
     private $email;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="text")
+     */
+    private $password;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="phoneNumber", type="integer")
@@ -51,10 +62,36 @@ class Customer extends BaseEntity
     private $phoneNumber;
     
     /**
+     * @var int
+     *
+     * @ORM\Column(name="gender", type="integer")
+     */
+    private $gender;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Order", mappedBy="customer")
      */
     private $orders;
 
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="dob", type="date")
+     */
+    private $dob;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="customer")
+     */
+    private $addresses;
+    
+    public function __construct() 
+    {
+        parent::__construct();
+        
+        $this->orders = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -194,5 +231,111 @@ class Customer extends BaseEntity
     public function getOrders()
     {
         return $this->orders;
+    }
+
+    /**
+     * Add address
+     *
+     * @param \CustomerBundle\Entity\Address $address
+     *
+     * @return Customer
+     */
+    public function addAddress(\CustomerBundle\Entity\Address $address)
+    {
+        $this->addresses[] = $address;
+
+        return $this;
+    }
+
+    /**
+     * Remove address
+     *
+     * @param \CustomerBundle\Entity\Address $address
+     */
+    public function removeAddress(\CustomerBundle\Entity\Address $address)
+    {
+        $this->addresses->removeElement($address);
+    }
+
+    /**
+     * Get addresses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Customer
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param integer $gender
+     *
+     * @return Customer
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return integer
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * Set dob
+     *
+     * @param \DateTime $dob
+     *
+     * @return Customer
+     */
+    public function setDob($dob)
+    {
+        $this->dob = $dob;
+
+        return $this;
+    }
+
+    /**
+     * Get dob
+     *
+     * @return \DateTime
+     */
+    public function getDob()
+    {
+        return $this->dob;
     }
 }

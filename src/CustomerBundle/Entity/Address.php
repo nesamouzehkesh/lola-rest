@@ -13,6 +13,9 @@ use AppBundle\Library\Base\BaseEntity;
  */
 class Address extends BaseEntity
 {
+    const TYPE_SHIPPING = 1;
+    const TYPE_BILLING = 2;
+    
     /**
      * @var int
      *
@@ -56,9 +59,22 @@ class Address extends BaseEntity
      * @ORM\Column(name="country", type="string", length=255)
      */
     private $country;
-    
-    
 
+    /**
+     * @ORM\Column(name="is_primary", type="boolean", nullable=true, options={"default"= 0})
+     */
+    protected $primary;
+    
+    /**
+     * @ORM\Column(name="type", type="integer")
+     */
+    protected $type;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    private $customer;
 
     /**
      * Get id
@@ -188,5 +204,77 @@ class Address extends BaseEntity
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * Set primary
+     *
+     * @param boolean $primary
+     *
+     * @return Address
+     */
+    public function setPrimary($primary)
+    {
+        $this->primary = $primary;
+
+        return $this;
+    }
+
+    /**
+     * Get primary
+     *
+     * @return boolean
+     */
+    public function getPrimary()
+    {
+        return $this->primary;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \int $type
+     *
+     * @return Address
+     */
+    public function setType(\int $type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \CustomerBundle\Entity\Customer $customer
+     *
+     * @return Address
+     */
+    public function setCustomer(\CustomerBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \CustomerBundle\Entity\Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
     }
 }

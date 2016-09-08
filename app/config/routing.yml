@@ -27,7 +27,11 @@ theme_bundle:
     
 label_bundle:
     resource: "@LabelBundle/Resources/config/routes.yml"    
-    prefix: /    
+    prefix: / 
+    
+customer_bundle:
+    resource: "@CustomerBundle/Resources/config/routes.yml"    
+    prefix: / 
     
 app:
     resource: "@AppBundle/Controller/"

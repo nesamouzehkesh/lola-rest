@@ -1,0 +1,5 @@
+customer:
+    resource: CustomerBundle\Controller\CustomerController
+    type:     rest
+    prefix:   /api/admin/customer
+    

@@ -5,6 +5,7 @@ namespace CustomerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Library\Base\BaseEntity;
 
+
 /**
  * OrderDetail
  *
@@ -50,7 +51,7 @@ class OrderDetail extends BaseEntity
     private $order;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="orderDetails")
+     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product", inversedBy="orderDetails")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     private $product;
@@ -137,5 +138,52 @@ class OrderDetail extends BaseEntity
     {
         return $this->status;
     }
-}
 
+    /**
+     * Set order
+     *
+     * @param \CustomerBundle\Entity\Order $order
+     *
+     * @return OrderDetail
+     */
+    public function setOrder(\CustomerBundle\Entity\Order $order = null)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return \CustomerBundle\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \CustomerBundle\Entity\Product $product
+     *
+     * @return OrderDetail
+     */
+    public function setProduct(\CustomerBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \CustomerBundle\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+}

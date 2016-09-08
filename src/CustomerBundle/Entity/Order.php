@@ -1,9 +1,10 @@
 <?php
 
 namespace CustomerBundle\Entity;
-use AppBundle\Library\Base\BaseEntity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Library\Base\BaseEntity;
 
 /**
  * Orderr
@@ -48,19 +49,23 @@ class Order extends BaseEntity
      */
     private $giftWrap;
     
-     /**
+    /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
     private $customer;
-    
     
     /**
     * @ORM\OneToMany(targetEntity="OrderDetail", mappedBy="order")
     */
     private $orderDetails;
     
-
+    public function __construct() 
+    {
+        parent::__construct();
+        
+        $this->orderDetails = new ArrayCollection();
+    }
 
     /**
      * Get id

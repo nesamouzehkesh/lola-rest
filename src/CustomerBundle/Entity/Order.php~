@@ -1,9 +1,10 @@
 <?php
 
 namespace CustomerBundle\Entity;
-use AppBundle\Library\Base\BaseEntity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Library\Base\BaseEntity;
 
 /**
  * Orderr
@@ -48,19 +49,23 @@ class Order extends BaseEntity
      */
     private $giftWrap;
     
-     /**
+    /**
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="orders")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
     private $customer;
-    
     
     /**
     * @ORM\OneToMany(targetEntity="OrderDetail", mappedBy="order")
     */
     private $orderDetails;
     
-
+    public function __construct() 
+    {
+        parent::__construct();
+        
+        $this->orderDetails = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -167,5 +172,62 @@ class Order extends BaseEntity
     {
         return $this->giftWrap;
     }
-}
 
+    /**
+     * Set customer
+     *
+     * @param \CustomerBundle\Entity\Customer $customer
+     *
+     * @return Order
+     */
+    public function setCustomer(\CustomerBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \CustomerBundle\Entity\Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * Add orderDetail
+     *
+     * @param \CustomerBundle\Entity\OrderDetail $orderDetail
+     *
+     * @return Order
+     */
+    public function addOrderDetail(\CustomerBundle\Entity\OrderDetail $orderDetail)
+    {
+        $this->orderDetails[] = $orderDetail;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderDetail
+     *
+     * @param \CustomerBundle\Entity\OrderDetail $orderDetail
+     */
+    public function removeOrderDetail(\CustomerBundle\Entity\OrderDetail $orderDetail)
+    {
+        $this->orderDetails->removeElement($orderDetail);
+    }
+
+    /**
+     * Get orderDetails
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderDetails()
+    {
+        return $this->orderDetails;
+    }
+}
