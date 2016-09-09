@@ -16,7 +16,7 @@ class OrderDetailRepository extends \Doctrine\ORM\EntityRepository
      * 
      * @return type
      */
-    public function getOrderDetails($criteria = 'order.id')
+    public function getOrderDetails($id)
     {
         $qb = $this->createQueryBuilder('o')
             ->select(
@@ -27,7 +27,8 @@ class OrderDetailRepository extends \Doctrine\ORM\EntityRepository
                 . 'od.status '
                 )
             ->join('o.orderDetails', 'od')
-            ->where('o.deleted = false AND o.id = order.id');
+            ->where('o.deleted = false AND o.id = :id')
+            ->setParameters('id', $id);
         
         $orderDetails = $qb->getQuery()->getScalarResult();
 

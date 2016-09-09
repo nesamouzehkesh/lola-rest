@@ -39,13 +39,13 @@ class OrderController extends FOSRestController
     public function getOrderDetailsAction(Request $request)
     {
         
-        $criteria = $request->query->all();
+        $id = $request->query->all();
         
         $orderDetails = $this
             ->getDoctrine()
             ->getEntityManager()
             ->getRepository('CustomerBundle:OrderDetail')
-            ->getOrderDetails($criteria);
+            ->getOrderDetails($id);
         
         return $orderDetails;
         
