@@ -2,6 +2,8 @@
 
 namespace CustomerBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+
 /**
  * OrderrRepository
  *
@@ -10,4 +12,21 @@ namespace CustomerBundle\Repository;
  */
 class OrderRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * 
+     * @return type
+     */
+    public function getOrders($order = 'ord.id')
+    {
+        $qb = $this->createQueryBuilder('ord')
+            ->select(
+                  'ord.id'
+                )
+            ->where('ord.deleted = false')
+            ->orderBy($order);
+        
+        return $qb->getQuery()->getScalarResult();
+    }
+    
+    
 }

@@ -18,7 +18,6 @@ class ProductRepository extends EntityRepository
      */
     public function getProducts($criteria = null, $order = 'p.id')
     {
-
         $qb = $this->createQueryBuilder('p')
             ->select(
                   'p.id, '
@@ -30,7 +29,6 @@ class ProductRepository extends EntityRepository
             ->join('p.brand', 'b')
             ->where('p.deleted = false')
             ->orderBy($order);
-        
         
         // Search by name if searchText is provided
         if (null !== $criteria) {

@@ -2,16 +2,53 @@
 
 namespace CustomerBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Delete;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\FOSRestController;
+use CustomerBundle\Entity\Order;
 
-class CustomerController extends Controller
+class OrderController extends FOSRestController
 {
-    /**
-     * @Route("/")
-     */
-    public function indexAction()
+     /**
+    * @ApiDoc()
+    * 
+    * @Get("/orders", name="api_admin_get_orders", options={ "method_prefix" = false })
+    */
+    public function getOrdersAction(Request $request)
     {
-        return $this->render('CustomerBundle:Default:index.html.twig');
+        $id = $request->query->get('id', null);
+        
+        $orders = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('CustomerBundle:Order')
+            ->getOrders();
+        
+        return $orders;
     }
+    
+     /**
+     * @ApiDoc()
+     * 
+     * @Get("/orderDetails", name="api_admin_get_orderDetails", options={ "method_prefix" = false })
+    */
+    public function getOrderDetailsAction(Request $request)
+    {
+        
+        $criteria = $request->query->all();
+        
+        $orderDetails = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('CustomerBundle:OrderDetail')
+            ->getOrderDetails($criteria);
+        
+        return $orderDetails;
+        
+    }
+    
 }

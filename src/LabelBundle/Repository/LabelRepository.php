@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class LabelRepository extends EntityRepository
 {
-    /**
+/**
 *
 * @param type $criteria
 * @return type

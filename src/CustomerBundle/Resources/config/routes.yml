@@ -3,3 +3,7 @@ customer:
     type:     rest
     prefix:   /api/admin/customer
     
+order:
+    resource: CustomerBundle\Controller\OrderController
+    type:     rest
+    prefix:   /api/admin/order

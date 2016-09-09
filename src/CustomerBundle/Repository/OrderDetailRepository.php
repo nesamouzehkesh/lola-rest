@@ -2,6 +2,8 @@
 
 namespace CustomerBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+
 /**
  * OrderDetailRepository
  *
@@ -10,4 +12,23 @@ namespace CustomerBundle\Repository;
  */
 class OrderDetailRepository extends \Doctrine\ORM\EntityRepository
 {
+        /**
+     * 
+     * @return type
+     */
+    public function getOrderDetails($criteria = 'order.id')
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select(
+                  'o.id, '
+                . 'o.orderDate, '
+                . 'od.quantity, '
+                . 'od.comment, '
+                . 'od.status '
+                )
+            ->join('o.orderDetails', 'od')
+            ->where('o.deleted = false AND o.id = order.id');
+        
+        $orderDetails = $qb->getQuery()->getScalarResult();
+
 }

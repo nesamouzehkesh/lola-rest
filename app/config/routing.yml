@@ -1,17 +1,4 @@
-user:
-    resource: "@UserBundle/Controller/"
-    type:     annotation
-    prefix:   /
 
-customer:
-    resource: "@CustomerBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-label:
-    resource: "@LabelBundle/Controller/"
-    type:     annotation
-    prefix:   /
 
 product_bundle:
     resource: "@ProductBundle/Resources/config/routes.yml"    
