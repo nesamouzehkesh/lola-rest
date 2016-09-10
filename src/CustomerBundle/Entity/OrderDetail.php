@@ -56,7 +56,6 @@ class OrderDetail extends BaseEntity
      */
     private $product;
     
-    
     /**
      * Get id
      *

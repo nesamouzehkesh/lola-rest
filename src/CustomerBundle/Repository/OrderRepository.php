@@ -28,5 +28,26 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getScalarResult();
     }
     
-    
+    /**
+     * 
+     * @return type
+     */
+    public function getOrderDetails($id)
+    {
+        $qb = $this->createQueryBuilder('ord')
+            ->select(
+                  'od.id, '
+                . 'od.quantity, '
+                . 'od.comment, '
+                . 'od.status, '
+                . 'p.name as product'
+                )
+            ->join('ord.orderDetails', 'od')
+            ->join('od.product', 'p')
+            ->where('ord.deleted = false AND od.deleted = false AND ord.id = :id')
+            ->setParameter('id', $id);
+        
+        return $qb->getQuery()->getScalarResult();
+
+    }    
 }
