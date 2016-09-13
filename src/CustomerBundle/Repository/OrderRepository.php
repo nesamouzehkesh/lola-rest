@@ -28,6 +28,7 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getScalarResult();
     }
     
+
     /**
      * 
      * @return type

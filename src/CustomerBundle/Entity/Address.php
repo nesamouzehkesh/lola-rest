@@ -237,7 +237,7 @@ class Address extends BaseEntity
      *
      * @return Address
      */
-    public function setType(\int $type)
+    public function setType($type)
     {
         $this->type = $type;
 
