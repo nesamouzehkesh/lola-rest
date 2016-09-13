@@ -13,7 +13,7 @@ use CustomerBundle\Entity\Order;
 
 class OrderController extends FOSRestController
 {
-     /**
+    /**
     * @ApiDoc()
     * 
     * @Get("/orders", name="api_admin_get_orders", options={ "method_prefix" = false })
@@ -31,9 +31,26 @@ class OrderController extends FOSRestController
         return $orders;
     }
     
+    /**
+    * @ApiDoc()
+    * 
+    * @Get("/customer-orders/{id}", name="api_admin_get_customer-orders", options={ "method_prefix" = false })
+    */
+    public function getCustomerOrdersAction($id)
+    {
+        
+        $orders = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('CustomerBundle:Order')
+            ->getCustomerOrders($id);
+        
+        return $orders;
+    }
+    
    
     
-     /**
+    /**
      * @ApiDoc()
      * 
      * @Get("/order-details/{id}", name="api_admin_get_orderDetails", options={ "method_prefix" = false })

@@ -16,7 +16,9 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
      * 
      * @return type
      */
-    public function getOrders($order = 'ord.id')
+    public function getOrders($order = 'ord.id') /* 
+     this function lists the orders as an array for the 
+     the customer object (With the customer object when it loads*/
     {
         $qb = $this->createQueryBuilder('ord')
             ->select(
@@ -24,6 +26,27 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
                 )
             ->where('ord.deleted = false')
             ->orderBy($order);
+        
+        return $qb->getQuery()->getScalarResult();
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getCustomerOrders($id) /* 
+     this function lists the orders for a customer id that is given to it
+     how it differs from the getOrders is we use this one for when we need to 
+     to list the orders after the admin has deleted an order from the list*/
+    {
+        $qb = $this->createQueryBuilder('ord')
+            ->select(
+                  'ord.id,'
+                 . 'ord.orderDate '
+                )
+            ->join('ord.customer', 'cus')
+            ->where('ord.deleted = false AND cus.id = :id')
+            ->setParameter('id', $id);
         
         return $qb->getQuery()->getScalarResult();
     }
