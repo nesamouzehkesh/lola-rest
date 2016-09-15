@@ -32,39 +32,23 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
         return $customers;
     }
     
-    /**
+   /**
      * 
      * @return type
-    */
+     */
     public function getCustomer($id)
     {
         $qb = $this->createQueryBuilder('cus')
             ->select(
-                  'cus.id,'
-                . 'cus.firstName,'
-                . 'cus.lastName,'
-                . 'cus.email,'
-                . 'cus.phoneNumber'
-
+                  'cus.id, '
+                . 'cus.firstName, '
+                . 'cus.lastName, '
+                . 'cus.email, '
+                . 'cus.phoneNumber '
                 )
             ->where('cus.id = :id')
             ->setParameter('id', $id);
         
-        $customer = $qb->getQuery()->getSingleResult();
-        
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->from('CustomerBundle:Order', 'ord')
-            ->select(
-                  'ord.id, '
-                . 'ord.orderDate '
-                )
-            ->where('ord.deleted = false AND ord.customer = :cus')
-            ->setParameter('cus', $customer['id']);
-
-        $customer['orders'] = $qb->getQuery()->getScalarResult();//yani hasele
-        //query ra be surate array be objecte customer ezafe kon
-        
-        return $customer;
-    }    
+        return $qb->getQuery()->getSingleResult();
+    }        
 }

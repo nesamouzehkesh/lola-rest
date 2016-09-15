@@ -139,7 +139,7 @@ class ProductRepository extends EntityRepository
         
         $product = $qb->getQuery()->getSingleResult();
         
-        // 
+        // generate category array for the product object
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->from('ProductBundle:ProductCategory', 'pc')
@@ -154,7 +154,7 @@ class ProductRepository extends EntityRepository
         $categories = $qb->getQuery()->getScalarResult();
         $product['categories'] = $categories;
         
-        
+        //generate lable array for the product object
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->from('LabelBundle:LabelRelation', 'lr')
