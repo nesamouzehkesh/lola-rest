@@ -56,6 +56,7 @@ class CustomerController extends FOSRestController
      */ 
     public function postCustomerAction(Request $request)
     {
+       
         $em = $this->getDoctrine()->getManager();
         // Get front end data
         $data = $request->request->get('customer');
@@ -63,14 +64,13 @@ class CustomerController extends FOSRestController
         
         if (isset($data['id'])) {
             // Find a customer for edit
-            $customer = $em->getRepository('CustomerBundle:Customer')->getCustomer($data['id']);
+            $customer = $em->getRepository('CustomerBundle:Customer')->find($data['id']);
         } else {
             // Create a new Theme object for add
             $customer = new Customer();
         }
         
-        $customer->setId($data['id']);
-        $customer->setName($data['firstName']);
+        $customer->setFirstName($data['firstName']);
         $customer->setLastName($data['lastName']);
         $customer->setEmail($data['email']);
         $customer->setPhoneNumber($data['phoneNumber']);
