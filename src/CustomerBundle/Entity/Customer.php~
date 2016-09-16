@@ -79,6 +79,7 @@ class Customer extends BaseEntity
      * @ORM\Column(name="dob", type="date")
      */
     private $dob;
+  
     
     /**
      * @ORM\OneToMany(targetEntity="Address", mappedBy="customer")
@@ -266,4 +267,78 @@ class Customer extends BaseEntity
     {
         return $this->addresses;
     }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Customer
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param integer $gender
+     *
+     * @return Customer
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return integer
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * Set dob
+     *
+     * @param \DateTime $dob
+     *
+     * @return Customer
+     */
+    public function setDob($dob)
+    {
+        $this->dob = $dob;
+
+        return $this;
+    }
+
+    /**
+     * Get dob
+     *
+     * @return \DateTime
+     */
+    public function getDob()
+    {
+        return $this->dob;
+    }
+
+ 
 }

@@ -81,7 +81,7 @@ class Product extends BaseEntity
      * @ORM\OneToMany(targetEntity="CustomerBundle\Entity\OrderDetail", mappedBy="product")
      */
     private $orderDetails;
-        
+    
     /**
      * 
      */
@@ -345,4 +345,6 @@ class Product extends BaseEntity
     {
         return $this->orderDetails;
     }
+
+  
 }
