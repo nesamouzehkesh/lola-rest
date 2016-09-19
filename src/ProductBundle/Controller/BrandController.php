@@ -47,6 +47,40 @@ class BrandController extends FOSRestController
         return $brand;
     }
     
+    /**
+    * @ApiDoc()
+    * 
+    * @Post("/brand", name="api_admin_post_brand", options={ "method_prefix" = false })
+    */ 
+    public function postBrandAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get front end data
+        $data = $request->request->get('brand');
+       
+        if (isset($data['id'])) {
+            // Find a brand for edit
+            $brand = $em->getRepository('ProductBundle:Brand')->find($data['id']);
+        } else {
+            // Create a new Brand object for add
+            $brand = new Brand();
+        }
+        
+        $brand->setName($data['name']);
+        $brand->setDescription($data['description']);
+        
+        // Persist $brand
+        $em->persist($brand);
+        
+        $em->flush();
+        
+        //You can expose whatever you want to your frontend here, such as themeId in this case
+        return array(
+            'name' => $brand->getName(),
+            'description' => $brand->getDescription()
+            );
+    }
+    
 }
 
 
