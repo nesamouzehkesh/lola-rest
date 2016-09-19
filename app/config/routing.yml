@@ -1,5 +1,4 @@
 
-
 product_bundle:
     resource: "@ProductBundle/Resources/config/routes.yml"    
     prefix: /

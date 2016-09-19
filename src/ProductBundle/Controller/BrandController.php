@@ -31,6 +31,22 @@ class BrandController extends FOSRestController
         return $brands;
     }
     
+    /**
+     * @ApiDoc()
+     * 
+     * @Get("/brand/{id}", defaults={"id": null}, name="api_admin_get_brand", options={ "method_prefix" = false })
+    */
+    public function getBrandAction($id)
+    {
+        $brand = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ProductBundle:Brand')
+            ->getBrand($id);
+        
+        return $brand;
+    }
+    
 }
 
 
