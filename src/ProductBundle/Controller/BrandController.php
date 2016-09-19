@@ -74,12 +74,39 @@ class BrandController extends FOSRestController
         
         $em->flush();
         
-        //You can expose whatever you want to your frontend here, such as themeId in this case
+        //You can expose whatever you want to your frontend here, such as brandId in this case
         return array(
             'name' => $brand->getName(),
             'description' => $brand->getDescription()
             );
     }
+    
+     /**
+     * 
+     * @ApiDoc()
+     * 
+     * @Delete("/brand/{id}", name="api_admin_delete_brand", options={ "method_prefix" = false })
+     */ 
+    public function deleteBrandAction($id)
+    {
+        // Get a brand from brand service. 
+        $brand = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ProductBundle:Brand')
+            ->find($id);
+
+        // Use deleteEntity function in app.service to delete this entity        
+        $this->get('app.service')->deleteEntity($brand);
+        
+        // There is a debate if this should be a 404 or a 204
+        // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
+        return $this->routeRedirectView(
+            'api_admin_get_brands', 
+            array(), 
+            Response::HTTP_NO_CONTENT
+            );        
+    } 
     
 }
 
