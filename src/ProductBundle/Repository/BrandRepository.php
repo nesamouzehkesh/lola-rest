@@ -28,4 +28,24 @@ class BrandRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getScalarResult();
     }
     
+     /**
+     * 
+     * @return type
+     */
+    public function getBrand($id)
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->select(
+                  'b.id, '
+                . 'b.name, '
+                . 'b.description'
+                )
+            ->where('b.id = :id')
+            ->setParameter('id', $id);
+        
+        $brand = $qb->getQuery()->getSingleResult();
+        
+        return $brand;
+    }    
+    
 }

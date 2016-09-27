@@ -16,9 +16,9 @@ class ProductRepository extends EntityRepository
      * 
      * @return type
      */
-    public function getProducts($criteria = null, $order = 'p.id')
+    public function getProducts($criteria = null)
     {
-        $qb = $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p') 
             ->select(
                   'p.id, '
                 . 'p.name, '
@@ -27,25 +27,35 @@ class ProductRepository extends EntityRepository
                 . 'b.name as brand'
                 )
             ->join('p.brand', 'b')
-            ->where('p.deleted = false')
-            ->orderBy($order);
+            ->where('p.deleted = false');
         
         // Search by name if searchText is provided
         if (null !== $criteria) {
+            if (isset($criteria['selectedSortCriteria'])) {
+                //convert to string
+                $sortCriteria = json_decode($criteria['selectedSortCriteria'], true);
+                //double checking the parameters passed
+                if (isset($sortCriteria['sort']) && isset($sortCriteria['order'])) {
+                    $qb->orderBy('p.' . $sortCriteria['sort'], $sortCriteria['order']);
+                }
+            }     
+
             if (isset($criteria['brand']) && intval($criteria['brand']) !== 0) {
                 $qb->andWhere('b.id = :brandId')
                     ->setParameter('brandId', $criteria['brand']);
             }
+            
             if (isset($criteria['searchText']) && $criteria['searchText'] !== '') {
                 $qb->andWhere('p.name LIKE :searchText')
                     ->setParameter('searchText', '%'. $criteria['searchText'] . '%');
             }
+            
             if (isset($criteria['category']) && intval($criteria['category']) !== 0) {
                 $qb->join('p.productCategories', 'pc')
                     ->andWhere('pc.category = :categoryId AND pc.deleted = 0')
                     ->setParameter('categoryId', $criteria['category']);
             } 
-        }     
+        }   
         
         $products = $qb->getQuery()->getScalarResult();
         foreach ($products as $key => $product) {
@@ -139,7 +149,7 @@ class ProductRepository extends EntityRepository
         
         $product = $qb->getQuery()->getSingleResult();
         
-        // 
+        // generate category array for the product object
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->from('ProductBundle:ProductCategory', 'pc')
@@ -154,7 +164,7 @@ class ProductRepository extends EntityRepository
         $categories = $qb->getQuery()->getScalarResult();
         $product['categories'] = $categories;
         
-        
+        //generate lable array for the product object
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->from('LabelBundle:LabelRelation', 'lr')

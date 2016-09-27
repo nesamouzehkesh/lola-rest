@@ -31,6 +31,83 @@ class BrandController extends FOSRestController
         return $brands;
     }
     
+    /**
+     * @ApiDoc()
+     * 
+     * @Get("/brand/{id}", defaults={"id": null}, name="api_admin_get_brand", options={ "method_prefix" = false })
+    */
+    public function getBrandAction($id)
+    {
+        $brand = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ProductBundle:Brand')
+            ->getBrand($id);
+        
+        return $brand;
+    }
+    
+    /**
+    * @ApiDoc()
+    * 
+    * @Post("/brand", name="api_admin_post_brand", options={ "method_prefix" = false })
+    */ 
+    public function postBrandAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get front end data
+        $data = $request->request->get('brand');
+       
+        if (isset($data['id'])) {
+            // Find a brand for edit
+            $brand = $em->getRepository('ProductBundle:Brand')->find($data['id']);
+        } else {
+            // Create a new Brand object for add
+            $brand = new Brand();
+        }
+        
+        $brand->setName($data['name']);
+        $brand->setDescription($data['description']);
+        
+        // Persist $brand
+        $em->persist($brand);
+        
+        $em->flush();
+        
+        //You can expose whatever you want to your frontend here, such as brandId in this case
+        return array(
+            'name' => $brand->getName(),
+            'description' => $brand->getDescription()
+            );
+    }
+    
+     /**
+     * 
+     * @ApiDoc()
+     * 
+     * @Delete("/brand/{id}", name="api_admin_delete_brand", options={ "method_prefix" = false })
+     */ 
+    public function deleteBrandAction($id)
+    {
+        // Get a brand from brand service. 
+        $brand = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ProductBundle:Brand')
+            ->find($id);
+
+        // Use deleteEntity function in app.service to delete this entity        
+        $this->get('app.service')->deleteEntity($brand);
+        
+        // There is a debate if this should be a 404 or a 204
+        // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
+        return $this->routeRedirectView(
+            'api_admin_get_brands', 
+            array(), 
+            Response::HTTP_NO_CONTENT
+            );        
+    } 
+    
 }
 
 

@@ -79,6 +79,7 @@ class Customer extends BaseEntity
      * @ORM\Column(name="dob", type="date")
      */
     private $dob;
+  
     
     /**
      * @ORM\OneToMany(targetEntity="Address", mappedBy="customer")
@@ -338,4 +339,6 @@ class Customer extends BaseEntity
     {
         return $this->dob;
     }
+
+ 
 }
