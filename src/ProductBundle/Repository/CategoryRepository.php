@@ -22,7 +22,10 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('category')
             ->select(
                   'category.id, '
-                . 'category.name'
+                . 'category.url,'
+                . 'category.name,'
+                . 'category.img,'
+                . 'category.description'
                 )
             ->where('category.deleted = false')
             ->orderBy($order);
@@ -35,7 +38,10 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('category')
             ->select(
                   'category.id, '
-                . 'category.name '
+                . 'category.url,'
+                . 'category.name, '
+                . 'category.img,'
+                . 'category.description'
                 )
             ->where('category.id = :id')
             ->setParameter('id', $id);

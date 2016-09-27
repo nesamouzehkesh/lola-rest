@@ -26,9 +26,30 @@ class Category extends BaseEntity
     /**
      * @var string
      *
+     * @ORM\Column(name="url", type="string", length=255)
+     */
+    private $url;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="img", type="string", length=255)
+     */
+    private $img;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;    
     
     /**
      * @ORM\OneToMany(targetEntity="ProductCategory", mappedBy="category")
@@ -80,6 +101,30 @@ class Category extends BaseEntity
     }
 
     /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Brand
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }    
+
+    /**
      * Add productCategory
      *
      * @param \ProductBundle\Entity\ProductCategory $productCategory
@@ -111,5 +156,29 @@ class Category extends BaseEntity
     public function getProductCategories()
     {
         return $this->productCategories;
+    }
+
+    /**
+     * Set img
+     *
+     * @param string $img
+     *
+     * @return Category
+     */
+    public function setImg($img)
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * Get img
+     *
+     * @return string
+     */
+    public function getImg()
+    {
+        return $this->img;
     }
 }
