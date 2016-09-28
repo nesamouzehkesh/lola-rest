@@ -13,7 +13,7 @@ use ProductBundle\Entity\Product;
 use ProductBundle\Entity\ProductCategory;
 use ProductBundle\Entity\Category;
 
-class ProductController extends FOSRestController
+class CustomerController extends FOSRestController
 {
     /**
      * @ApiDoc()
@@ -28,7 +28,7 @@ class ProductController extends FOSRestController
         $products = $this
             ->getDoctrine()
             ->getEntityManager()
-            ->getRepository('ProductBundle:Product')
+            ->getRepository('ProductBundle:ProductCategory')
             ->getCategoryProducts($criteria);
         
         return $products;

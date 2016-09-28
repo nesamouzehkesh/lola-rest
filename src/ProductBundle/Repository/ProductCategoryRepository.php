@@ -55,14 +55,14 @@ class ProductCategoryRepository extends EntityRepository
             ->join('pc.category', 'c')
             ->join('pc.product','p')
             ->where('c.id = :id')
-            ->setParameter('id', $criteria['categoryUrl'])
-            ->andWhere('c.deleted = false')
-            ->orderBy($order);
-       
-        if (null !== $criteria) {
+            ->andWhere('c.deleted = false');
+        
+         if (null !== $criteria) {
             if (isset($criteria['categoryUrl'])) {
-                $criteria = json_decode($criteria['categoryUrl'], true);
-            }
+                 $qb->andWhere('c.id = :id')
+                    ->setParameter('id', $criteria['categoryUrl']);
+               }
+        }
         return $qb->getQuery()->getScalarResult();
     }
 }
