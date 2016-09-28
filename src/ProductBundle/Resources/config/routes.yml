@@ -11,4 +11,9 @@ category:
 brand:
     resource: ProductBundle\Controller\BrandController
     type:     rest
-    prefix:   /api/admin/brand    
+    prefix:   /api/admin/brand   
+    
+customer:
+    resource: ProductBundle\Controller\CustomerController
+    type:     rest
+    prefix:   /api/customer/product    
