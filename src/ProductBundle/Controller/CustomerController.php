@@ -34,6 +34,4 @@ class CustomerController extends FOSRestController
         return $products;
         
     }
-     
 }
-

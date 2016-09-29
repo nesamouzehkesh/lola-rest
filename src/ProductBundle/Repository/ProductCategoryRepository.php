@@ -42,27 +42,27 @@ class ProductCategoryRepository extends EntityRepository
      * 
      * @return type
      */
-    public function getCategoryProducts($criteria = null, $order = 'p.id')
+    public function getCategoryProducts($criteria = null)
     {
         $qb = $this->createQueryBuilder('pc')
             ->select(
-                  
                   'p.name,'
                 . 'p.description,'
                 . 'p.price,'
-                . 'p.brand'
+                . 'b.name as brandName'
                 )
             ->join('pc.category', 'c')
             ->join('pc.product','p')
-            ->where('c.id = :id')
-            ->andWhere('c.deleted = false');
+            ->join('p.brand','b')
+            ->where('c.deleted = false');
         
          if (null !== $criteria) {
             if (isset($criteria['categoryUrl'])) {
-                 $qb->andWhere('c.id = :id')
-                    ->setParameter('id', $criteria['categoryUrl']);
-               }
+                 $qb->andWhere('c.url = :url')
+                    ->setParameter('url', $criteria['categoryUrl']);
+            }
         }
+        
         return $qb->getQuery()->getScalarResult();
     }
 }
