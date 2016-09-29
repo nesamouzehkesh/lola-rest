@@ -46,7 +46,8 @@ class ProductCategoryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('pc')
             ->select(
-                  'p.name,'
+                  'p.id,'  
+                . 'p.name,'
                 . 'p.description,'
                 . 'p.price,'
                 . 'b.name as brandName'
