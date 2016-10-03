@@ -87,5 +87,4 @@ class CustomerController extends FOSRestController
             'lastName' => $customer->getLastName()
             );
     }
-
 }

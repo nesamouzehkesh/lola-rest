@@ -1,4 +1,6 @@
-services:
-#    customer.example:
-#        class: CustomerBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+services:    
+    customer.service:
+        class: CustomerBundle\Service\CustomerService
+        arguments: 
+            - "@translator.default"
+            - "@doctrine.orm.default_entity_manager"
