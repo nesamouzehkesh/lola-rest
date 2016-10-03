@@ -1,3 +1,4 @@
+# Admin part
 product:
     resource: ProductBundle\Controller\ProductController
     type:     rest
@@ -12,8 +13,9 @@ brand:
     resource: ProductBundle\Controller\BrandController
     type:     rest
     prefix:   /api/admin/brand   
-    
+
+# Customer access part    
 customer:
     resource: ProductBundle\Controller\CustomerController
     type:     rest
-    prefix:   /api/customer/product    
+    prefix:   /api/customer/product

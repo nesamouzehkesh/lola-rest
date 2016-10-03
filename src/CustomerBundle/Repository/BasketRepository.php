@@ -10,4 +10,23 @@ namespace CustomerBundle\Repository;
  */
 class BasketRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * 
+     * @param type $customer
+     * @return type
+     */
+    public function getBasketItems($customer) 
+    {
+        $qb = $this->createQueryBuilder('basket')
+            ->select(
+                'basket.id,'
+               .'basket.quantity,'
+               .'p.name'
+                )
+            ->join('basket.product', 'p')
+            ->where('basket.deleted = false AND basket.customer = :customer')
+            ->setParameter('customer', $customer);
+
+        return $qb->getQuery()->getScalarResult();
+    }    
 }

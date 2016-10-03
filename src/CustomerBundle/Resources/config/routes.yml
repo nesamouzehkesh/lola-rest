@@ -1,3 +1,4 @@
+# Admin part
 customer:
     resource: CustomerBundle\Controller\CustomerController
     type:     rest
@@ -7,3 +8,12 @@ order:
     resource: CustomerBundle\Controller\OrderController
     type:     rest
     prefix:   /api/admin/order
+    
+    
+# Customer access part    
+basket:
+    resource: CustomerBundle\Controller\BasketController
+    type:     rest
+    prefix:   /api/customer/basket
+
+    
