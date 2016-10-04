@@ -16,4 +16,8 @@ basket:
     type:     rest
     prefix:   /api/customer/basket
 
+wishlist:
+    resource: CustomerBundle\Controller\WishlistController
+    type:     rest
+    prefix:   /api/customer/wishlist
     
