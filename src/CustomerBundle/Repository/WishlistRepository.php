@@ -15,17 +15,20 @@ class WishlistRepository extends \Doctrine\ORM\EntityRepository
      * @param type $customer
      * @return type
      */
-    public function getWishlistItems($customer) 
+    public function getWishlistItem($customer, $product) 
     {
         $qb = $this->createQueryBuilder('wishlist')
             ->select(
                 'wishlist.id,'
-               .'p.name'
+               .'p.id,'
+               .'c.id'
                 )
             ->join('wishlist.product', 'p')
-            ->where('wishlist.deleted = false AND wishlist.customer = :customer')
-            ->setParameter('customer', $customer);
+            ->join('wishlist.customer', 'c')
+            ->where('wishlist.deleted = false AND wishlist.customer = :customer AND wishlist.product = :product')
+            ->setParameter('customer', $customer)
+            ->setParameter('product', $product);
 
-        return $qb->getQuery()->getScalarResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }    
 }

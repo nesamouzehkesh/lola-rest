@@ -18,7 +18,7 @@ class WishlistController extends FOSRestController
     * 
     * @Get("/items", name="api_customer_get_wishlist_items", options={ "method_prefix" = false })
     */
-    public function getWishlistItemsAction(Request $request)
+    public function getWishlistItemsAction(Request $request) 
     {
         $customer = $this->get('customer.service')->getCustomer();
         
@@ -35,7 +35,7 @@ class WishlistController extends FOSRestController
      * 
      * @Post("/items", name="api_customer_post_wishlist_items", options={ "method_prefix" = false })
      */ 
-    public function postWishlistItemAction(Request $request)
+    public function postWishlistItemAction(Request $request) //the request parameter is product id
     {
         $em = $this->getDoctrine()->getManager();
         // Get front end data
@@ -46,14 +46,21 @@ class WishlistController extends FOSRestController
         $customer = $this->get('customer.service')->getCustomer();
         $product = $em->getRepository('ProductBundle:Product')->find($params['id']);
         
+        $alreadyAdded = $em->getRepository('CustomerBundle:Wishlist')->getWishlistItem($customer, $product);
+        if ($alreadyAdded !== NULL) {
+            return [];
+        }
+        else {
+        
         $wishlistItem = new Wishlist();
         $wishlistItem->setCustomer($customer);
         $wishlistItem->setProduct($product);
         
-        
         // Persist $product
         $em->persist($wishlistItem);
         $em->flush();
+        
+        }
         
         return array();        
     }
