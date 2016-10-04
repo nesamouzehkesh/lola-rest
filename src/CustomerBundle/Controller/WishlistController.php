@@ -50,8 +50,7 @@ class WishlistController extends FOSRestController
         if ($alreadyAdded !== NULL) {
             return [];
         }
-        else {
-        
+       
         $wishlistItem = new Wishlist();
         $wishlistItem->setCustomer($customer);
         $wishlistItem->setProduct($product);
@@ -60,7 +59,6 @@ class WishlistController extends FOSRestController
         $em->persist($wishlistItem);
         $em->flush();
         
-        }
         
         return array();        
     }

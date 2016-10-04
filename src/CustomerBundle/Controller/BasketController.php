@@ -45,7 +45,7 @@ class BasketController extends FOSRestController
     /**
      * @ApiDoc()
      * 
-     * @Post("/items", name="api_customer_post_basket_item", options={ "method_prefix" = false })
+     * @Post("/items", name="api_customer_post_basket_items", options={ "method_prefix" = false })
      */ 
     public function postBasketItemAction(Request $request)
     {
@@ -57,6 +57,11 @@ class BasketController extends FOSRestController
         // get this customer info from JSON web token in the request header
         $customer = $this->get('customer.service')->getCustomer();
         $product = $em->getRepository('ProductBundle:Product')->find($params['id']);
+        
+        $alreadyAdded = $em->getRepository('CustomerBundle:Basket')->getBasketItem($customer, $product);
+        if ($alreadyAdded !== NULL) {
+            return [];
+        }
         
         $basketItem = new Basket();
         $basketItem->setCustomer($customer);

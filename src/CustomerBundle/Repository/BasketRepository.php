@@ -15,18 +15,22 @@ class BasketRepository extends \Doctrine\ORM\EntityRepository
      * @param type $customer
      * @return type
      */
-    public function getBasketItems($customer) 
+    public function getBasketItem($customer, $product) 
     {
         $qb = $this->createQueryBuilder('basket')
             ->select(
                 'basket.id,'
                .'basket.quantity,'
-               .'p.name'
+               .'p.name,'
+               .'p.id,' 
+               .'c.id' 
                 )
             ->join('basket.product', 'p')
-            ->where('basket.deleted = false AND basket.customer = :customer')
-            ->setParameter('customer', $customer);
+            ->join('basket.customer', 'c')
+            ->where('basket.deleted = false AND basket.customer = :customer AND basket.product = :product')
+            ->setParameter('customer', $customer)
+            ->setParameter('product', $product);
 
-        return $qb->getQuery()->getScalarResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }    
 }
