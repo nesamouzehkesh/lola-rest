@@ -46,9 +46,11 @@ class WishlistController extends FOSRestController
         $customer = $this->get('customer.service')->getCustomer();
         $product = $em->getRepository('ProductBundle:Product')->find($params['id']);
         
-        $alreadyAdded = $em->getRepository('CustomerBundle:Wishlist')->getWishlistItem($customer, $product);
+        $alreadyAdded = $em
+            ->getRepository('CustomerBundle:Wishlist')
+            ->getWishlistItem($customer, $product);
         if ($alreadyAdded !== NULL) {
-            return [];
+            return array();
         }
        
         $wishlistItem = new Wishlist();

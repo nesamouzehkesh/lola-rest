@@ -18,13 +18,7 @@ class WishlistRepository extends \Doctrine\ORM\EntityRepository
     public function getWishlistItem($customer, $product) 
     {
         $qb = $this->createQueryBuilder('wishlist')
-            ->select(
-                'wishlist.id,'
-               .'p.id,'
-               .'c.id'
-                )
-            ->join('wishlist.product', 'p')
-            ->join('wishlist.customer', 'c')
+            ->select('wishlist')
             ->where('wishlist.deleted = false AND wishlist.customer = :customer AND wishlist.product = :product')
             ->setParameter('customer', $customer)
             ->setParameter('product', $product);
