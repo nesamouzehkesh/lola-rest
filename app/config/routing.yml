@@ -25,3 +25,6 @@ app:
 
 api_login_check:
     path: /api/login_check
+
+login_check:
+    path: /api/login_check
