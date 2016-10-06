@@ -101,3 +101,13 @@ fos_rest:
         
     routing_loader:
         default_format: json    
+        
+
+## Lexik JWT Authentication (This bundle provides JWT authentication for your Symfony2 REST API)
+#
+## https://github.com/lexik/LexikJWTAuthenticationBundle/blob/master/Resources/doc/index.md
+lexik_jwt_authentication:
+    private_key_path:   %private_key_path%
+    public_key_path:    %public_key_path%
+    pass_phrase:        %pass_phrase%
+    token_ttl:          %token_ttl%

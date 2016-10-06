@@ -14,6 +14,15 @@ parameters:
     mailer_host:       127.0.0.1
     mailer_user:       ~
     mailer_password:   ~
+    
+    # For user bundle
+    app_saltmain: ''
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+    
+    # For Lexik JWT Authentication
+    private_key_path:   %kernel.root_dir%/var/jwt/private.pem
+    public_key_path:    %kernel.root_dir%/var/jwt/public.pem
+    pass_phrase:        ThisTokenIsNotSoSecretChangeItPlease
+    token_ttl:          86400
