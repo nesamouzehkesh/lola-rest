@@ -315,11 +315,11 @@ class Product extends BaseEntity
     /**
      * Add orderDetail
      *
-     * @param \ProductBundle\Entity\OrderDetail $orderDetail
+     * @param \CustomerBundle\Entity\OrderDetail $orderDetail
      *
      * @return Product
      */
-    public function addOrderDetail(\ProductBundle\Entity\OrderDetail $orderDetail)
+    public function addOrderDetail(\CustomerBundle\Entity\OrderDetail $orderDetail)
     {
         $this->orderDetails[] = $orderDetail;
 
@@ -329,9 +329,9 @@ class Product extends BaseEntity
     /**
      * Remove orderDetail
      *
-     * @param \ProductBundle\Entity\OrderDetail $orderDetail
+     * @param \CustomerBundle\Entity\OrderDetail $orderDetail
      */
-    public function removeOrderDetail(\ProductBundle\Entity\OrderDetail $orderDetail)
+    public function removeOrderDetail(\CustomerBundle\Entity\OrderDetail $orderDetail)
     {
         $this->orderDetails->removeElement($orderDetail);
     }

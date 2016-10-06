@@ -38,14 +38,13 @@ class BasketController extends FOSRestController
      */ 
     public function deleteBasketItemAction($id)
     {
-        
-       // Get the basket item from the BasketService 
+        // Get the basket item from the BasketService 
         $item = $this
             ->getDoctrine()
             ->getEntityManager()
             ->getRepository('CustomerBundle:Basket')
             ->find($id);
-
+        
         // Use deleteEntity function in app.service to delete this entity        
         $this->get('app.service')->deleteEntity($item);
         
@@ -94,20 +93,16 @@ class BasketController extends FOSRestController
     /**
     * @ApiDoc()
     * 
-    * @Post("/item", name="api_customer_update_basket_item", options={ "method_prefix" = false })
+    * @Post("/items/{id}", name="api_customer_update_basket_item", options={ "method_prefix" = false })
     */ 
-    public function updateBasketItemAction(Request $request)
+    public function updateBasketItemAction(Request $request, $id)
     {
+        
         $em = $this->getDoctrine()->getManager();
         // Get front end data
         $params = $request->request->get('params');
-        
-        // Get current customer doing thi action. We will later
-        // get this customer info from JSON web token in the request header
-        $customer = $this->get('customer.service')->getCustomer();
-        $basket = $em->getRepository('CustomerBundle:Basket')->find($params['id']);
-        
-        $basket->setCustomer($customer);
+       
+        $basket = $em->getRepository('CustomerBundle:Basket')->find($id);
         $basket->setQuantity($params['quantity']);
         
         // Persist $basket
