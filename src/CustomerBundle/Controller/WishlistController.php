@@ -68,7 +68,7 @@ class WishlistController extends FOSRestController
      * 
      * @ApiDoc()
      * 
-     * @Delete("/items/{id}", name="api_customer_delete_basket_item", options={ "method_prefix" = false })
+     * @Delete("/items/{id}", name="api_customer_delete_wishlist_item", options={ "method_prefix" = false })
      */ 
     public function deleteWishlistItemAction($id)
     {

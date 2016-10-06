@@ -34,7 +34,7 @@ class BasketController extends FOSRestController
      * 
      * @ApiDoc()
      * 
-     * @Delete("/item/{id}", name="api_customer_delete_basket_item", options={ "method_prefix" = false })
+     * @Delete("/items/{id}", name="api_customer_delete_basket_item", options={ "method_prefix" = false })
      */ 
     public function deleteBasketItemAction($id)
     {
@@ -90,4 +90,32 @@ class BasketController extends FOSRestController
         
         return array();        
     }
+    
+    /**
+    * @ApiDoc()
+    * 
+    * @Post("/item", name="api_customer_update_basket_item", options={ "method_prefix" = false })
+    */ 
+    public function updateBasketItemAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get front end data
+        $params = $request->request->get('params');
+        
+        // Get current customer doing thi action. We will later
+        // get this customer info from JSON web token in the request header
+        $customer = $this->get('customer.service')->getCustomer();
+        $basket = $em->getRepository('CustomerBundle:Basket')->find($params['id']);
+        
+        $basket->setCustomer($customer);
+        $basket->setQuantity($params['quantity']);
+        
+        // Persist $basket
+        $em->persist($basket);
+        $em->flush();
+        
+        return array();        
+    }
+    
+    
 }

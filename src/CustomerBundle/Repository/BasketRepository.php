@@ -45,7 +45,8 @@ class BasketRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->createQueryBuilder('basket')
             ->select(
-                'basket.quantity,'
+                'basket.id,'
+               .'basket.quantity,'
                .'p.name,'
                .'p.id as pid,' 
                .'c.id as cid' 
