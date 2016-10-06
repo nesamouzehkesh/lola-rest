@@ -47,8 +47,8 @@ class BasketRepository extends \Doctrine\ORM\EntityRepository
             ->select(
                 'basket.quantity,'
                .'p.name,'
-               .'p.id,' 
-               .'c.id' 
+               .'p.id as pid,' 
+               .'c.id as cid' 
                 )
             ->join('basket.product', 'p')
             ->join('basket.customer', 'c')

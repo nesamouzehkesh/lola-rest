@@ -34,12 +34,28 @@ class BasketController extends FOSRestController
      * 
      * @ApiDoc()
      * 
-     * @Delete("/items/{id}", name="api_customer_delete_basket_item", options={ "method_prefix" = false })
+     * @Delete("/item/{id}", name="api_customer_delete_basket_item", options={ "method_prefix" = false })
      */ 
     public function deleteBasketItemAction($id)
     {
         
-        return [];
+       // Get the basket item from the BasketService 
+        $item = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('CustomerBundle:Basket')
+            ->find($id);
+
+        // Use deleteEntity function in app.service to delete this entity        
+        $this->get('app.service')->deleteEntity($item);
+        
+        // There is a debate if this should be a 404 or a 204
+        // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
+        return $this->routeRedirectView(
+            'api_customer_get_basket_items', 
+            array(), 
+            Response::HTTP_NO_CONTENT
+            );   
     } 
     
     /**
