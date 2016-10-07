@@ -23,8 +23,12 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
+
+    
+admin_login:
+    path:     /login/{isFront}
+    defaults: { _controller: AppBundle:Security:login, isFront: false }
 api_login_check:
     path: /api/login_check
-
-login_check:
-    path: /api/login_check
+admin_logout:
+    path: /admin/logout    
