@@ -10,6 +10,10 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use CustomerBundle\Entity\Basket;
+use CustomerBundle\Entity\Order;
+use CustomerBundle\Entity\OrderDetail;
+
+
 
 class BasketController extends FOSRestController
 {
@@ -108,6 +112,49 @@ class BasketController extends FOSRestController
         // Persist $basket
         $em->persist($basket);
         $em->flush();
+        
+        return array();        
+    }
+    
+    /**
+     * @ApiDoc()
+     * 
+     * @Post("/order", name="api_customer_post_order", options={ "method_prefix" = false })
+     */ 
+    public function submitOrderAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $customer = $this->get('customer.service')->getCustomer();
+        
+        $items = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('CustomerBundle:Basket')
+            ->getBasketItems($customer);
+        
+        $order = new $Order();
+        $order->setCustomer($customer);
+        
+        foreach ($items as $item) {
+            
+            $orderDetail = new OrderDetail();
+            
+            $orderDetail->setQuantity = $item['quantity'];
+            $orderDetail->setProduct = $item['name'];
+            $order->addOrderDetails($orderDetail);
+            
+            $em->persist($orderDetail);
+            $em->flush();
+        }
+        //now we have an order object with a specific customer and orderDetails
+        // Persist $order
+        $em->persist($order);
+        $em->flush();
+        
+        //we now have to empty the basket items for this customer:
+        foreach ($items as $item) {
+            $this->get('app.service')->deleteEntity($item);
+        }
         
         return array();        
     }
