@@ -10,6 +10,10 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use CustomerBundle\Entity\Basket;
+use CustomerBundle\Entity\Order;
+use CustomerBundle\Entity\OrderDetail;
+
+
 
 class BasketController extends FOSRestController
 {
@@ -38,14 +42,13 @@ class BasketController extends FOSRestController
      */ 
     public function deleteBasketItemAction($id)
     {
-        
-       // Get the basket item from the BasketService 
+        // Get the basket item from the BasketService 
         $item = $this
             ->getDoctrine()
             ->getEntityManager()
             ->getRepository('CustomerBundle:Basket')
             ->find($id);
-
+        
         // Use deleteEntity function in app.service to delete this entity        
         $this->get('app.service')->deleteEntity($item);
         
@@ -94,20 +97,16 @@ class BasketController extends FOSRestController
     /**
     * @ApiDoc()
     * 
-    * @Post("/item", name="api_customer_update_basket_item", options={ "method_prefix" = false })
+    * @Post("/items/{id}", name="api_customer_update_basket_item", options={ "method_prefix" = false })
     */ 
-    public function updateBasketItemAction(Request $request)
+    public function updateBasketItemAction(Request $request, $id)
     {
+        
         $em = $this->getDoctrine()->getManager();
         // Get front end data
         $params = $request->request->get('params');
-        
-        // Get current customer doing thi action. We will later
-        // get this customer info from JSON web token in the request header
-        $customer = $this->get('customer.service')->getCustomer();
-        $basket = $em->getRepository('CustomerBundle:Basket')->find($params['id']);
-        
-        $basket->setCustomer($customer);
+       
+        $basket = $em->getRepository('CustomerBundle:Basket')->find($id);
         $basket->setQuantity($params['quantity']);
         
         // Persist $basket
@@ -117,5 +116,46 @@ class BasketController extends FOSRestController
         return array();        
     }
     
-    
+    /**
+     * @ApiDoc()
+     * 
+     * @Post("/order", name="api_customer_post_order", options={ "method_prefix" = false })
+     */ 
+    public function submitOrderAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $customer = $this->get('customer.service')->getCustomer();
+        
+        $items = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('CustomerBundle:Basket')
+            ->getBasketItems($customer);
+        
+        $order = new $Order();
+        $order->setCustomer($customer);
+        
+        foreach ($items as $item) {
+            
+            $orderDetail = new OrderDetail();
+            
+            $orderDetail->setQuantity = $item['quantity'];
+            $orderDetail->setProduct = $item['name'];
+            $order->addOrderDetails($orderDetail);
+            
+            $em->persist($orderDetail);
+            $em->flush();
+        }
+        //now we have an order object with a specific customer and orderDetails
+        // Persist $order
+        $em->persist($order);
+        $em->flush();
+        
+        //we now have to empty the basket items for this customer:
+        foreach ($items as $item) {
+            $this->get('app.service')->deleteEntity($item);
+        }
+        
+        return array();        
+    }
 }

@@ -57,5 +57,7 @@ class BasketRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('customer', $customer);
 
         return $qb->getQuery()->getScalarResult();
-    }    
+    } 
+    
+     
 }
