@@ -35,29 +35,33 @@ class BasketRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }    
     
-     /**
+    /**
      * 
      * @param type $customer
      * @return type
      */
-    public function getBasketItems($customer) //all the items for this customer 
-    
+    public function getBasketItems($customer, $isJSON = true) //all the items for this customer 
     {
-        $qb = $this->createQueryBuilder('basket')
-            ->select(
-                'basket.id,'
+        $select = 'basket';
+        if ($isJSON) {
+           $select = 'basket.id,'
                .'basket.quantity,'
                .'p.name,'
                .'p.id as pid,' 
-               .'c.id as cid' 
-                )
+               .'c.id as cid';
+        }
+
+        $qb = $this->createQueryBuilder('basket')
+            ->select($select)
             ->join('basket.product', 'p')
             ->join('basket.customer', 'c')
             ->where('basket.deleted = false AND basket.customer = :customer')
             ->setParameter('customer', $customer);
-
-        return $qb->getQuery()->getScalarResult();
+        
+        if ($isJSON) {
+            return $qb->getQuery()->getScalarResult();
+        } else {
+            return $qb->getQuery()->getResult();
+        }
     } 
-    
-     
 }

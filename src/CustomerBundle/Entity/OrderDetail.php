@@ -33,16 +33,9 @@ class OrderDetail extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="comment", type="text")
+     * @ORM\Column(name="comment", type="text", nullable=true)
      */
     private $comment;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=255)
-     */
-    private $status;
     
     /**
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderDetails")
@@ -115,30 +108,6 @@ class OrderDetail extends BaseEntity
     }
 
     /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return OrderDetail
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * Set order
      *
      * @param \CustomerBundle\Entity\Order $order
@@ -165,11 +134,11 @@ class OrderDetail extends BaseEntity
     /**
      * Set product
      *
-     * @param \CustomerBundle\Entity\Product $product
+     * @param \ProductBundle\Entity\Product $product
      *
      * @return OrderDetail
      */
-    public function setProduct(\CustomerBundle\Entity\Product $product = null)
+    public function setProduct(\ProductBundle\Entity\Product $product = null)
     {
         $this->product = $product;
 

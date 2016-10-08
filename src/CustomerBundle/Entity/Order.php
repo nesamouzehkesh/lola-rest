@@ -24,28 +24,28 @@ class Order extends BaseEntity
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="orderDate", type="string", length=255)
+     * @ORM\Column(name="status", type="integer")
      */
-    private $orderDate;
+    private $status;
     
     /**
     * @ORM\ManyToOne(targetEntity="Address")
-    * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id", nullable=true)
     */
     private $shippingAddress;
 
     /**
     * @ORM\ManyToOne(targetEntity="Address")
-    * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id", nullable=true)
     */
     private $billingAddress;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="giftWrap", type="boolean")
+     * @ORM\Column(name="giftWrap", type="boolean", nullable=true)
      */
     private $giftWrap;
     
@@ -64,6 +64,7 @@ class Order extends BaseEntity
     {
         parent::__construct();
         
+        $this->status = 0;
         $this->orderDetails = new ArrayCollection();
     }
 
@@ -78,27 +79,27 @@ class Order extends BaseEntity
     }
 
     /**
-     * Set orderDate
+     * Set status
      *
-     * @param string $orderDate
+     * @param integer $status
      *
-     * @return Orderr
+     * @return OrderDetail
      */
-    public function setOrderDate($orderDate)
+    public function setStatus($status)
     {
-        $this->orderDate = $orderDate;
+        $this->status = $status;
 
         return $this;
     }
 
     /**
-     * Get orderDate
+     * Get status
      *
-     * @return string
+     * @return integer
      */
-    public function getOrderDate()
+    public function getStatus()
     {
-        return $this->orderDate;
+        return $this->status;
     }
 
     /**
