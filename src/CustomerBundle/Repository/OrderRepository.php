@@ -42,7 +42,8 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('ord')
             ->select(
                   'ord.id,'
-                 . 'ord.orderDate '
+                . 'ord.status, '
+                . 'ord.createdTime as orderDate '
                 )
             ->join('ord.customer', 'cus')
             ->where('ord.deleted = false AND cus.id = :id')
@@ -63,7 +64,6 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
                   'od.id, '
                 . 'od.quantity, '
                 . 'od.comment, '
-                . 'od.status, '
                 . 'p.name as product'
                 )
             ->join('ord.orderDetails', 'od')

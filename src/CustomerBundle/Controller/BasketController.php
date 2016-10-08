@@ -132,16 +132,15 @@ class BasketController extends FOSRestController
 
         $order = new Order;
         $order->setCustomer($customer);
-        
-        $item = $items[0];
-        //foreach ($items as $item) {
+        foreach ($items as $item) {
             $orderDetail = new OrderDetail();
             $orderDetail->setQuantity($item->getQuantity());
             $orderDetail->setProduct($item->getProduct());
-            $order->addOrderDetails($orderDetail);
+            $orderDetail->setOrder($order);
+            $order->addOrderDetail($orderDetail);
             
             $em->persist($orderDetail);
-        //}
+        }
         //now we have an order object with a specific customer and orderDetails
         // Persist $order
         $em->persist($order);
