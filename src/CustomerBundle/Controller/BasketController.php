@@ -138,7 +138,7 @@ class BasketController extends FOSRestController
             $orderDetail = new OrderDetail();
             $orderDetail->setQuantity($item->getQuantity());
             $orderDetail->setProduct($item->getProduct());
-            $order->addOrderDetails($orderDetail);
+            $order->addOrderDetail($orderDetail);
             
             $em->persist($orderDetail);
         //}
