@@ -42,7 +42,8 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('ord')
             ->select(
                   'ord.id,'
-                 . 'ord.orderDate '
+                . 'ord.status, '
+                . 'ord.createdTime as orderDate '
                 )
             ->join('ord.customer', 'cus')
             ->where('ord.deleted = false AND cus.id = :id')
@@ -63,7 +64,6 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
                   'od.id, '
                 . 'od.quantity, '
                 . 'od.comment, '
-                . 'od.status, '
                 . 'p.name as product'
                 )
             ->join('ord.orderDetails', 'od')
@@ -73,5 +73,30 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         
         return $qb->getQuery()->getScalarResult();
 
-    }    
+    }   
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getCustomerAddress($customerId)
+    {
+        $qb = $this->createQueryBuilder('ord')
+            ->select(
+                  'shad.street, '
+                . 'shad.city, '
+                . 'shad.state,'
+                . 'shad.zip,'
+                . 'shad.country,'
+                . 'ord.giftWrap,'
+                . 'c.id'
+                )
+            ->join('ord.shippingAddress', 'shad')
+            ->join('ord.customer', 'c')
+            ->where('ord.deleted = false AND od.deleted = false AND c.id = :customerId')
+            ->setParameter('customerId', $customerId);
+        
+        return $qb->getQuery()->getScalarResult();
+
+    }   
 }

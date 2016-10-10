@@ -13,8 +13,6 @@ use CustomerBundle\Entity\Basket;
 use CustomerBundle\Entity\Order;
 use CustomerBundle\Entity\OrderDetail;
 
-
-
 class BasketController extends FOSRestController
 {
     /**
@@ -121,8 +119,11 @@ class BasketController extends FOSRestController
      * 
      * @Post("/order", name="api_customer_post_order", options={ "method_prefix" = false })
      */ 
-    public function submitOrderAction()
+    public function submitOrderAction(Request $request)
+        
     {
+        $address = $request->query->all();
+        
         $em = $this->getDoctrine()->getManager();
         $customer = $this->get('customer.service')->getCustomer();
         $items = $this->getDoctrine()
@@ -132,16 +133,17 @@ class BasketController extends FOSRestController
 
         $order = new Order;
         $order->setCustomer($customer);
-        
-        $item = $items[0];
-        //foreach ($items as $item) {
+        foreach ($items as $item) {
             $orderDetail = new OrderDetail();
             $orderDetail->setQuantity($item->getQuantity());
             $orderDetail->setProduct($item->getProduct());
+            $orderDetail->setOrder($order);
             $order->addOrderDetail($orderDetail);
             
+
+            
             $em->persist($orderDetail);
-        //}
+        }
         //now we have an order object with a specific customer and orderDetails
         // Persist $order
         $em->persist($order);
