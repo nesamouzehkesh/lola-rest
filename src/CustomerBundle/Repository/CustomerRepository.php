@@ -61,8 +61,7 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
     $address = array();  
     
     // generate shipping array for the address object
-    $qb = $this->getEntityManager()
-        ->createQueryBuilder('cus')
+    $qb = $this->createQueryBuilder('cus')
             ->select(
                   'ad.street, '
                 . 'ad.city, '
@@ -74,13 +73,12 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
             ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 1')
             ->setParameter('customerId', $customerId);
 
-    $shipping = $qb->getQuery()->getSingleResult(); //SingleResult gives you an object, ScalarResult gives you an array of objects
+    $shipping = $qb->getQuery()->getOneOrNullResult();  //SingleResult gives you an object, ScalarResult gives you an array of objects
 
     $address['shipping'] = $shipping;
 
     //generate billing array for the address object
-    $qb = $this->getEntityManager()
-        ->createQueryBuilder('cus')
+    $qb = $this->createQueryBuilder('cus')
         ->select(
               'ad.street, '
             . 'ad.city, '
@@ -92,7 +90,7 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
         ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 2')
         ->setParameter('customerId', $customerId);
 
-    $billing = $qb->getQuery()->getSingleResult();
+    $billing = $qb->getQuery()->getOneOrNullResult();
 
     $address['billing'] = $billing;
 
