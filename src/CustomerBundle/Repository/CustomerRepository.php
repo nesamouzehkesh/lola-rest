@@ -71,10 +71,10 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
                 . 'ad.country'
                 )
             ->join('cus.addresses', 'ad')
-            ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type == 1')
+            ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 1')
             ->setParameter('customerId', $customerId);
 
-    $shipping = $qb->getQuery()->getScalarResult();
+    $shipping = $qb->getQuery()->getSingleResult(); //SingleResult gives you an object, ScalarResult gives you an array of objects
 
     $address['shipping'] = $shipping;
 
@@ -89,10 +89,10 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
             . 'ad.country'
             )
         ->join('cus.addresses', 'ad')
-        ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type == 2')
+        ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 2')
         ->setParameter('customerId', $customerId);
 
-    $billing = $qb->getQuery()->getScalarResult();
+    $billing = $qb->getQuery()->getSingleResult();
 
     $address['billing'] = $billing;
 
