@@ -75,28 +75,5 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
 
     }   
     
-    /**
-     * 
-     * @return type
-     */
-    public function getCustomerAddress($customerId)
-    {
-        $qb = $this->createQueryBuilder('ord')
-            ->select(
-                  'shad.street, '
-                . 'shad.city, '
-                . 'shad.state,'
-                . 'shad.zip,'
-                . 'shad.country,'
-                . 'ord.giftWrap,'
-                . 'c.id'
-                )
-            ->join('ord.shippingAddress', 'shad')
-            ->join('ord.customer', 'c')
-            ->where('ord.deleted = false AND od.deleted = false AND c.id = :customerId')
-            ->setParameter('customerId', $customerId);
-        
-        return $qb->getQuery()->getScalarResult();
-
-    }   
+ 
 }

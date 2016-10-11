@@ -134,7 +134,8 @@ class ProductRepository extends EntityRepository
      * @return type
      */
     public function getProduct($id)
-    {
+    {   
+        
         $qb = $this->createQueryBuilder('p')
             ->select(
                   'p.id, '
@@ -162,6 +163,7 @@ class ProductRepository extends EntityRepository
             ->setParameter('productId', $product['id']);
 
         $categories = $qb->getQuery()->getScalarResult();
+        
         $product['categories'] = $categories;
         
         //generate lable array for the product object

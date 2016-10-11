@@ -138,21 +138,5 @@ class OrderController extends FOSRestController
         return array();        
     }
 
-    /**
-     * @ApiDoc()
-     * 
-     * @Get("/shipping", name="api_admin_get_shipping", options={ "method_prefix" = false })
-    */
-    public function getCustomerAddress()
-    {
-        $customer = $this->get('customer.service')->getCustomer();
-
-        $shippingInfo = $this
-            ->getDoctrine()
-            ->getEntityManager()
-            ->getRepository('CustomerBundle:Order')
-            ->getCustomerAddress($customer);
-        
-        return $shippingInfo;
-    }
+   
 }

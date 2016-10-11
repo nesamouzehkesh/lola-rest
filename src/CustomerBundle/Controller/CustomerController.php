@@ -87,4 +87,22 @@ class CustomerController extends FOSRestController
             'lastName' => $customer->getLastName()
             );
     }
+    
+     /**
+     * @ApiDoc()
+     * 
+     * @Get("/shipping", name="api_admin_get_shipping", options={ "method_prefix" = false })
+    */
+    public function getCustomerAddressAction()
+    {
+        $customer = $this->get('customer.service')->getCustomer();
+
+        $shippingInfo = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('CustomerBundle:Customer')
+            ->getCustomerAddress($customer);
+        
+        return $shippingInfo;
+    }
 }

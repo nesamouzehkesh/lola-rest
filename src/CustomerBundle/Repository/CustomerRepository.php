@@ -32,7 +32,7 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
         return $customers;
     }
     
-   /**
+    /**
      * 
      * @return type
      */
@@ -50,5 +50,56 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('id', $id);
         
         return $qb->getQuery()->getSingleResult();
-    }        
+    }  
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getCustomerAddress($customerId)
+    {
+    $address = array();  
+    
+    // generate shipping array for the address object
+    $qb = $this->getEntityManager()
+        ->createQueryBuilder('cus')
+            ->select(
+                  'ad.street, '
+                . 'ad.city, '
+                . 'ad.state,'
+                . 'ad.zip,'
+                . 'ad.country'
+                )
+            ->join('cus.addresses', 'ad')
+            ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type == 1')
+            ->setParameter('customerId', $customerId);
+
+    $shipping = $qb->getQuery()->getScalarResult();
+
+    $address['shipping'] = $shipping;
+
+    //generate billing array for the address object
+    $qb = $this->getEntityManager()
+        ->createQueryBuilder('cus')
+        ->select(
+              'ad.street, '
+            . 'ad.city, '
+            . 'ad.state,'
+            . 'ad.zip,'
+            . 'ad.country'
+            )
+        ->join('cus.addresses', 'ad')
+        ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type == 2')
+        ->setParameter('customerId', $customerId);
+
+    $billing = $qb->getQuery()->getScalarResult();
+
+    $address['billing'] = $billing;
+
+
+    return $address;
+
+    } 
+    
+    
 }
