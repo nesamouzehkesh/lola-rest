@@ -9,7 +9,6 @@ order:
     type:     rest
     prefix:   /api/admin/order
     
-    
 # Customer access part    
 basket:
     resource: CustomerBundle\Controller\BasketController
