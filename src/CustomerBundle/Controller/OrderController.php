@@ -20,6 +20,7 @@ class OrderController extends FOSRestController
     */
     public function getOrdersAction(Request $request)
     {
+        /*get all existing orders*/
         $id = $request->query->get('id', null);
         
         $orders = $this
@@ -95,7 +96,7 @@ class OrderController extends FOSRestController
     /**
      * @ApiDoc()
      * 
-     * @Post("/orders", name="api_customer_post_order", options={ "method_prefix" = false })
+     * @Post("/postorder", name="api_admin_order_postorder", options={ "method_prefix" = false })
      */ 
     public function submitOrderAction(Request $request)
         
