@@ -16,19 +16,43 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
      * 
      * @return type
      */
-    public function getOrders($order = 'ord.id') /* 
+    public function getOrders() /* 
      this function lists the orders as an array for the 
      the customer object (With the customer object when it loads*/
     {
         $qb = $this->createQueryBuilder('ord')
             ->select(
-                  'ord.id'
+                  'ord.id,'
+                . 'ord.createdTime as orderDate,'
+                . 'c.id as cid'
+                
                 )
-            ->where('ord.deleted = false')
-            ->orderBy($order);
+            ->join('ord.orderDetails', 'od')
+            ->join('od.product', 'p')
+            ->join('ord.customer', 'c')
+            ->join('ord.shippingAddress', 'a')
+            ->where('ord.deleted = false');
         
         return $qb->getQuery()->getScalarResult();
     }
+    
+     /**
+     * 
+     * @return type
+     */
+    public function getOrder($id)
+    {
+        $qb = $this->createQueryBuilder('ord')
+            ->select(
+                  'ord.id'
+                )
+            ->where('ord.id = :id')
+            ->setParameter('id', $id);
+        
+        $order = $qb->getQuery()->getSingleResult();
+        
+        return $order;
+    }    
     
     /**
      * 
@@ -61,13 +85,20 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->createQueryBuilder('ord')
             ->select(
-                  'od.id, '
-                . 'od.quantity, '
-                . 'od.comment, '
-                . 'p.name as product'
+                  'ord.id,'
+                . 'a.street,'
+                . 'a.city,'
+                . 'a.state,'
+                . 'a.zip,'
+                . 'a.country,'
+                . 'od.quantity,'
+                . 'od.comment,'
+                . 'p.id as pid,'
+                . 'p.name as productName'
                 )
             ->join('ord.orderDetails', 'od')
             ->join('od.product', 'p')
+            ->join('ord.shippingAddress', 'a')
             ->where('ord.deleted = false AND od.deleted = false AND ord.id = :id')
             ->setParameter('id', $id);
         
