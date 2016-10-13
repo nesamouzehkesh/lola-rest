@@ -24,23 +24,21 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
             ->select(
                   'ord.id,'
                 . 'ord.createdTime as orderDate,'
-                . 'c.id as cid'
-                
+                . 'c.id as cid,'
+                . 'c.firstName as customerFname,'
+                . 'c.lastName as customerLname'
                 )
-            ->join('ord.orderDetails', 'od')
-            ->join('od.product', 'p')
             ->join('ord.customer', 'c')
-            ->join('ord.shippingAddress', 'a')
             ->where('ord.deleted = false');
         
         return $qb->getQuery()->getScalarResult();
     }
     
-     /**
+    /**
      * 
      * @return type
      */
-    public function getOrder($id)
+    public function getOrder($id, $loadAss = false)
     {
         $qb = $this->createQueryBuilder('ord')
             ->select(
@@ -50,6 +48,17 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('id', $id);
         
         $order = $qb->getQuery()->getSingleResult();
+        
+        if($loadAss) {
+            asdasd
+            asdas
+            
+            asdasd
+            asdasdas
+            
+            asdasdasd
+            asdasd
+        }
         
         return $order;
     }    

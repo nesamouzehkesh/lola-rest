@@ -27,7 +27,7 @@ class OrderController extends FOSRestController
             ->getDoctrine()
             ->getEntityManager()
             ->getRepository('CustomerBundle:Order')
-            ->getOrders();
+            ->getOrders($id);
         
         return $orders;
     }
