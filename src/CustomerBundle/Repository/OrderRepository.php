@@ -38,8 +38,9 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
      * 
      * @return type
      */
-    public function getOrder($id, $loadAss = false)
+    public function getOrder($id, $loadAss = true)
     {
+        /**********************************************************************/
         $qb = $this->createQueryBuilder('ord')
             ->select(
                   'ord.id'
@@ -49,17 +50,74 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         
         $order = $qb->getQuery()->getSingleResult();
         
-        if($loadAss) {
-            asdasd
-            asdas
-            
-            asdasd
-            asdasdas
-            
-            asdasdasd
-            asdasd
-        }
         
+        /**********************************************************************/
+        //if you only need to get the id and orderDate of an order then simply set $loadAss as false.
+        if($loadAss) { 
+            $qb = $this->createQueryBuilder('ord')
+                ->select(
+                      'c.id as cid,'
+                    . 'c.firstName as customerFname,'
+                    . 'c.lastName as customerLname'
+                    )
+                ->join('ord.customer', 'c')  
+                ->where('ord.id = :id')
+                ->setParameter('id', $id);
+            
+            $order = $qb->getQuery()->getSingleResult();
+        
+            // generate shipping array for this order object
+            $qb = $this->createQueryBuilder('ord')
+                ->select(
+                      'shipAd.street, '
+                    . 'shipAd.city, '
+                    . 'shipAd.state,'
+                    . 'shipAd.zip,'
+                    . 'shipAd.country'
+                    )
+                ->join('ord.shippingAddress', 'shipAd')
+                ->where('ord.deleted = false AND shipAd.deleted = false AND ord.id = :id')
+                ->setParameter('id', $id);
+
+            $shipping = $qb->getQuery()->getOneOrNullResult();  //SingleResult gives you an object, ScalarResult gives you an array of objects
+
+            $order['shipping'] = $shipping;
+
+            //generate billing array for this order object
+            $qb = $this->createQueryBuilder('ord')
+                ->select(
+                      'billAd.street, '
+                    . 'billAd.city, '
+                    . 'billAd.state,'
+                    . 'billAd.zip,'
+                    . 'billAd.country'
+                    )
+                ->join('ord.billingAddress', 'billAd')
+                ->where('ord.deleted = false AND billAd.deleted = false AND ord.id = :id')
+                ->setParameter('id', $id);
+
+            $billing = $qb->getQuery()->getOneOrNullResult();  //SingleResult gives you an object, ScalarResult gives you an array of objects
+
+            $order['billing'] = $billing;
+            
+            //this part queries for the order's details:
+            $qb = $this->createQueryBuilder('ord')
+                ->select(
+                      'od.comment,'
+                    . 'od.quantity,'
+                    . 'p.id as pid,'
+                    . 'p.name as productName'
+                    )
+                ->join('ord.orderDetails', 'od')
+                ->join('od.product', 'p')
+                ->where('ord.deleted = false AND ord.id = :id')
+                ->setParameter('id', $id);
+            
+            $orderDetails = $qb->getQuery()->getOneOrNullResult(); 
+            
+            $order['orderDetails'] = $orderDetails;
+                }
+        /**********************************************************************/        
         return $order;
     }    
     
@@ -84,36 +142,6 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         
         return $qb->getQuery()->getScalarResult();
     }
-    
-
-    /**
-     * 
-     * @return type
-     */
-    public function getOrderDetails($id)
-    {
-        $qb = $this->createQueryBuilder('ord')
-            ->select(
-                  'ord.id,'
-                . 'a.street,'
-                . 'a.city,'
-                . 'a.state,'
-                . 'a.zip,'
-                . 'a.country,'
-                . 'od.quantity,'
-                . 'od.comment,'
-                . 'p.id as pid,'
-                . 'p.name as productName'
-                )
-            ->join('ord.orderDetails', 'od')
-            ->join('od.product', 'p')
-            ->join('ord.shippingAddress', 'a')
-            ->where('ord.deleted = false AND od.deleted = false AND ord.id = :id')
-            ->setParameter('id', $id);
-        
-        return $qb->getQuery()->getScalarResult();
-
-    }   
     
  
 }
