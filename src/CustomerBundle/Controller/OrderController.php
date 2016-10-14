@@ -66,21 +66,6 @@ class OrderController extends FOSRestController
         return $orders;
     }
     
-    /**
-     * @ApiDoc()
-     * 
-     * @Get("/details/{id}", name="api_admin_get_details", options={ "method_prefix" = false })
-    */
-    public function getOrderDetailsAction($id)
-    {
-        $orderDetails = $this
-            ->getDoctrine()
-            ->getEntityManager()
-            ->getRepository('CustomerBundle:Order')
-            ->getOrderDetails($id);
-        
-        return $orderDetails;
-    }
     
     /**
      * 

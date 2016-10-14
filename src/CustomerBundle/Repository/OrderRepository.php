@@ -113,7 +113,7 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
                 ->where('ord.deleted = false AND ord.id = :id')
                 ->setParameter('id', $id);
             
-            $orderDetails = $qb->getQuery()->getOneOrNullResult(); 
+            $orderDetails = $qb->getQuery()->getScalarResult(); 
             
             $order['orderDetails'] = $orderDetails;
                 }
