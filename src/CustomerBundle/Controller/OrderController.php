@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use CustomerBundle\Entity\Order;
+use CustomerBundle\Entity\Address;
 
 class OrderController extends FOSRestController
 {
@@ -101,15 +102,33 @@ class OrderController extends FOSRestController
      * @Post("/postorder", name="api_admin_order_postorder", options={ "method_prefix" = false })
      */ 
     public function submitOrderAction(Request $request)
-        
     {
-        $param = $request->request->all();
-        var_dump($param);
-        exit;
         
+        $param = $request->request->all();
+
+        /*
+        if (isset($param['shipping'])) {
+
+        }
+        else { //if user has yet no addresses:
+            $shipping = makeAddress($param['newShipping'],'Shipping',true); //make sure it's primary
+            if ($param['sameAddress']) { //use it as billing too?
+                $billing = makeAddress($param['newBilling'],'billing',true);
+            } else // if user wants a different new billing address:
+                {
+                    $billing = makeAddress ($param['newShipping'],'Billing',true);//make sure it's primary
+                }
+        }*
+         * 
+         */
         
         $em = $this->getDoctrine()->getManager();
         $customer = $this->get('customer.service')->getCustomer();
+
+       
+        $shipping = $this->makeAddress($customer, $param['newShipping'], Address::TYPE_SHIPPING, true);
+        $billing = $this->makeAddress($customer, $param['newBilling'],   Address::TYPE_BILLING,  true);        
+        
         $items = $this->getDoctrine()
             ->getManager()
             ->getRepository('CustomerBundle:Basket')
@@ -123,23 +142,56 @@ class OrderController extends FOSRestController
             $orderDetail->setProduct($item->getProduct());
             $orderDetail->setOrder($order);
             $order->addOrderDetail($orderDetail);
-            
 
-            
             $em->persist($orderDetail);
         }
-        //now we have an order object with a specific customer and orderDetails
-        // Persist $order
+        
+        $order->setShippingAddress($shipping);
+        $order->setBillingAddress($billing); 
+       
+        //we can now persist the order object
         $em->persist($order);
         $em->flush();
         
         //we now have to empty the basket items for this customer:
-       // foreach ($items as $item) {
-            //$this->get('app.service')->deleteEntity($item);
-        //}
+        foreach ($items as $item) {
+            $this->get('app.service')->deleteEntity($item);
+        }
         
-        return array();        
+        return array('id' => $order->getId());        
     }
+    
+    //now we have an order object with a specific customer and orderDetails
+    // we now also need the address information to finalize our order object:
+    private function makeAddress($customer, $data, $type, $isPrimary) 
+    {
+        $em = $this->getDoctrine()->getManager();
+        /*
+        if ($isPrimary) { //if the new address needs to be primary then the previous one should not be
+           // select primary address this $type for this $user
+            $previousAddress = $em
+                ->getRepository('CustomerBundle:Address')
+                ->getPrimaryAddress($user, $type);
+            
+            if ($previousAddress instanceof Address) {
+                $previousAddress->setPrimary(false);
+            }
+        } //make a new one and make it primary
+        */
+        
+        $address = new Address();
+        $address->setCustomer($customer);
+        $address->setPrimary($isPrimary);
+        $address->setType($type);
+        $address->setStreet($data['street']);
+        $address->setCity($data['city']);
+        $address->setZip($data['zip']);
+        $address->setCountry($data['country']);
+        $address->setState($data['state']);
 
-   
+        $em->persist($address);
+        $em->flush();
+
+        return $address;
+    }
 }

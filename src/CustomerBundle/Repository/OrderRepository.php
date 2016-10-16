@@ -40,7 +40,6 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
      */
     public function getOrder($id, $loadAss = true)
     {
-        /**********************************************************************/
         $qb = $this->createQueryBuilder('ord')
             ->select(
                   'ord.id'
@@ -50,13 +49,14 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
         
         $order = $qb->getQuery()->getSingleResult();
         
-        
-        /**********************************************************************/
-        //if you only need to get the id and orderDate of an order then simply set $loadAss as false.
+        // if you only need to get the id and orderDate of an order then simply 
+        // set $loadAss as false.
         if($loadAss) { 
             $qb = $this->createQueryBuilder('ord')
                 ->select(
-                      'c.id as cid,'
+                      'ord.id as oid,'
+                    . 'ord.createdTime as orderDate,'
+                    . 'c.id as cid,'
                     . 'c.firstName as customerFname,'
                     . 'c.lastName as customerLname'
                     )
@@ -79,7 +79,8 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
                 ->where('ord.deleted = false AND shipAd.deleted = false AND ord.id = :id')
                 ->setParameter('id', $id);
 
-            $shipping = $qb->getQuery()->getOneOrNullResult();  //SingleResult gives you an object, ScalarResult gives you an array of objects
+            $shipping = $qb->getQuery()->getOneOrNullResult();  
+            //SingleResult gives you an object, ScalarResult gives you an array of objects
 
             $order['shipping'] = $shipping;
 
@@ -110,14 +111,15 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
                     )
                 ->join('ord.orderDetails', 'od')
                 ->join('od.product', 'p')
-                ->where('ord.deleted = false AND ord.id = :id')
+                ->where('ord.deleted = false AND ord.id = :id') 
                 ->setParameter('id', $id);
             
             $orderDetails = $qb->getQuery()->getScalarResult(); 
             
             $order['orderDetails'] = $orderDetails;
                 }
-        /**********************************************************************/        
+        
+                
         return $order;
     }    
     
