@@ -10,4 +10,43 @@ namespace CustomerBundle\Repository;
  */
 class AddressRepository extends \Doctrine\ORM\EntityRepository
 {
-}
+    /**
+     * 
+     * @return type
+     */
+    public function getAddress($customerId, $addressType)
+    {
+        $qb = $this->createQueryBuilder('ad')
+            ->select(
+                  'ad.street, '
+                . 'ad.city, '
+                . 'ad.state, '
+                . 'ad.country, '
+                . 'ad.zip '
+                )
+            ->join('ad.customer', 'cus')
+            ->where('cus.id = :id AND ad.type = :type')
+            ->setParameter('id', $customerId)
+            ->setParameter('type', $addressType);
+        
+        return $qb->getQuery()->getSingleResult();
+    }  
+    
+    public function getPrimaryAddress($customerId, $addressType)
+    {
+        $qb = $this->createQueryBuilder('ad')
+            ->select(
+                  'ad.street, '
+                . 'ad.city, '
+                . 'ad.state, '
+                . 'ad.country, '
+                . 'ad.zip '
+                )
+            ->join('ad.customer', 'cus')
+            ->where('cus.id = :id AND ad.type = :type AND ad.primary = true')
+            ->setParameter('id', $customerId)
+            ->setParameter('type', $addressType);
+        
+        return $qb->getQuery()->getSingleResult();
+    }
+} 

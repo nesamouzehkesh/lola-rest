@@ -103,52 +103,75 @@ class OrderController extends FOSRestController
      */ 
     public function submitOrderAction(Request $request)
     {
+        //make the order object in this action, compelete it with everything and 
+        //return it to the frontend 
         
         $param = $request->request->all();
-
-        /*
-        if (isset($param['shipping'])) {
-
+        
+        $em = $this->getDoctrine()->getManager();
+        $customer = $this->get('customer.service')->getCustomer();
+        
+   /***/if (isset($param['shipping'])) { //if there are already enterred addresses
+            if ($param['setNewShipping']) { //if user wants to again enter another address for sh
+               $shipping = $this->makeNewAddress($customer, $param['newShipping'], 
+                    Address::TYPE_SHIPPING, $param[' setNewShippingAsPrimary']); 
+                if ($param['sameAddress']) { // use this as billing too
+                    $billing = $this->makeNewAddress($customer, $param['newShipping'],   
+                       Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
+                } else { //if user does not want to use this sh as b too then:
+                     if ($param['setNewBilling']) { //if it wants a new b address then:
+                         $billing = $this->makeNewAddress($customer, $param['newBilling'],   
+                            Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
+                     } else { //otherwise if it wants to keep the previous billing address:
+                          $billing = getAddress($customer, $type = 'Address::TYPE_BILLING'); 
+                        }
+                    }
+                }
+            else { //if user does not intend to add a new address for sh besides the previous one:
+                $shipping = getAddress($customer, $type = 'Address::TYPE_SHIPPING');
+                
+                if ($param['setNewBilling']) { //if user wants a new billing address
+                     $billing = $this->makeNewAddress($customer, $param['newBilling'],   
+                        Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
+                }
+                else { //if user does not intend to add a new address for b besides the previous one:
+                   $billing = getAddress($customer, $type = 'Address::TYPE_BILLING'); 
+                }
+            }
         }
-        else { //if user has yet no addresses:
-            $shipping = makeAddress($param['newShipping'],'Shipping',true); //make sure it's primary
+   /***/else { //if user has yet no addresses:
+            $shipping = $this->makeNewAddress($customer, $param['newShipping'], 
+                Address::TYPE_SHIPPING, true); //make sure it's primary
             if ($param['sameAddress']) { //use it as billing too?
-                $billing = makeAddress($param['newBilling'],'billing',true);
+                 $billing = $this->makeNewAddress($customer, $param['newBilling'],   
+                     Address::TYPE_BILLING,  true);   
             } else // if user wants a different new billing address:
                 {
                     $billing = makeAddress ($param['newShipping'],'Billing',true);//make sure it's primary
                 }
-        }*
-         * 
-         */
+        }
+          
+        $order = new Order;
         
-        $em = $this->getDoctrine()->getManager();
-        $customer = $this->get('customer.service')->getCustomer();
-
-       
-        $shipping = $this->makeAddress($customer, $param['newShipping'], Address::TYPE_SHIPPING, true);
-        $billing = $this->makeAddress($customer, $param['newBilling'],   Address::TYPE_BILLING,  true);        
+        $order->setShippingAddress($shipping); //order.shippingAddress
+        $order->setBillingAddress($billing);   //order.billingAddress
         
         $items = $this->getDoctrine()
             ->getManager()
             ->getRepository('CustomerBundle:Basket')
             ->getBasketItems($customer, false);
-
-        $order = new Order;
+       
         $order->setCustomer($customer);
         foreach ($items as $item) {
             $orderDetail = new OrderDetail();
-            $orderDetail->setQuantity($item->getQuantity());
-            $orderDetail->setProduct($item->getProduct());
+            $orderDetail->setQuantity($item->getQuantity()); 
+            $orderDetail->setProduct($item->getProduct());   
             $orderDetail->setOrder($order);
             $order->addOrderDetail($orderDetail);
 
             $em->persist($orderDetail);
         }
         
-        $order->setShippingAddress($shipping);
-        $order->setBillingAddress($billing); 
-       
         //we can now persist the order object
         $em->persist($order);
         $em->flush();
@@ -158,26 +181,25 @@ class OrderController extends FOSRestController
             $this->get('app.service')->deleteEntity($item);
         }
         
-        return array('id' => $order->getId());        
+        return array('id' => $order->getId()); //frontend only needs this order object's id       
     }
     
-    //now we have an order object with a specific customer and orderDetails
-    // we now also need the address information to finalize our order object:
-    private function makeAddress($customer, $data, $type, $isPrimary) 
+  
+    private function makeNewAddress($customer, $data, $type, $isPrimary) 
     {
         $em = $this->getDoctrine()->getManager();
-        /*
-        if ($isPrimary) { //if the new address needs to be primary then the previous one should not be
-           // select primary address this $type for this $user
+        
+        if ($isPrimary) { 
+           // select the previous primary address of this $type for this $customer 
+           // and set it to false
             $previousAddress = $em
                 ->getRepository('CustomerBundle:Address')
-                ->getPrimaryAddress($user, $type);
+                ->getPrimaryAddress($customer, $type);
             
             if ($previousAddress instanceof Address) {
-                $previousAddress->setPrimary(false);
+                $previousAddress->setPrimary(false); 
             }
-        } //make a new one and make it primary
-        */
+        } //else, if the new address's $isPrimary is false then just make a new address
         
         $address = new Address();
         $address->setCustomer($customer);
@@ -192,6 +214,17 @@ class OrderController extends FOSRestController
         $em->persist($address);
         $em->flush();
 
+        return $address; //this will be your either $billing or $shipping object
+    }
+    
+    private function getAddress($customer, $type) {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+       $address = $em->getRepository('CustomerBundle:Address')
+            ->getAddress($customer, $type);
+        
         return $address;
+        
     }
 }
