@@ -143,7 +143,7 @@ class OrderController extends FOSRestController
             $shipping = $this->makeNewAddress($customer, $param['newShipping'], 
                 Address::TYPE_SHIPPING, true); //make sure it's primary
             if ($param['sameAddress']) { //use it as billing too?
-                 $billing = $this->makeNewAddress($customer, $param['newBilling'],   
+                 $billing = $this->makeNewAddress($customer, $param['newShipping'],   
                      Address::TYPE_BILLING,  true);   
             } else // if user wants a different new billing address:
                 {
