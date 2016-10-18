@@ -277,4 +277,18 @@ class Address extends BaseEntity
     {
         return $this->customer;
     }
+
+    /**
+     * Set createdTime
+     *
+     * @param integer $createdTime
+     *
+     * @return Address
+     */
+    public function setCreatedTime($createdTime)
+    {
+        $this->createdTime = $createdTime;
+
+        return $this;
+    }
 }

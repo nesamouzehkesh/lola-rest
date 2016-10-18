@@ -71,7 +71,7 @@ class Order extends BaseEntity
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -83,7 +83,7 @@ class Order extends BaseEntity
      *
      * @param integer $status
      *
-     * @return OrderDetail
+     * @return Order
      */
     public function setStatus($status)
     {
@@ -103,59 +103,11 @@ class Order extends BaseEntity
     }
 
     /**
-     * Set shippingAddress
-     *
-     * @param string $shippingAddress
-     *
-     * @return Orderr
-     */
-    public function setShippingAddress($shippingAddress)
-    {
-        $this->shippingAddress = $shippingAddress;
-
-        return $this;
-    }
-
-    /**
-     * Get shippingAddress
-     *
-     * @return string
-     */
-    public function getShippingAddress()
-    {
-        return $this->shippingAddress;
-    }
-
-    /**
-     * Set billingAddress
-     *
-     * @param string $billingAddress
-     *
-     * @return Orderr
-     */
-    public function setBillingAddress($billingAddress)
-    {
-        $this->billingAddress = $billingAddress;
-
-        return $this;
-    }
-
-    /**
-     * Get billingAddress
-     *
-     * @return string
-     */
-    public function getBillingAddress()
-    {
-        return $this->billingAddress;
-    }
-
-    /**
      * Set giftWrap
      *
      * @param boolean $giftWrap
      *
-     * @return Orderr
+     * @return Order
      */
     public function setGiftWrap($giftWrap)
     {
@@ -167,11 +119,73 @@ class Order extends BaseEntity
     /**
      * Get giftWrap
      *
-     * @return bool
+     * @return boolean
      */
     public function getGiftWrap()
     {
         return $this->giftWrap;
+    }
+
+    /**
+     * Set createdTime
+     *
+     * @param integer $createdTime
+     *
+     * @return Order
+     */
+    public function setCreatedTime($createdTime)
+    {
+        $this->createdTime = $createdTime;
+
+        return $this;
+    }
+
+    /**
+     * Set shippingAddress
+     *
+     * @param \CustomerBundle\Entity\Address $shippingAddress
+     *
+     * @return Order
+     */
+    public function setShippingAddress(\CustomerBundle\Entity\Address $shippingAddress = null)
+    {
+        $this->shippingAddress = $shippingAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get shippingAddress
+     *
+     * @return \CustomerBundle\Entity\Address
+     */
+    public function getShippingAddress()
+    {
+        return $this->shippingAddress;
+    }
+
+    /**
+     * Set billingAddress
+     *
+     * @param \CustomerBundle\Entity\Address $billingAddress
+     *
+     * @return Order
+     */
+    public function setBillingAddress(\CustomerBundle\Entity\Address $billingAddress = null)
+    {
+        $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get billingAddress
+     *
+     * @return \CustomerBundle\Entity\Address
+     */
+    public function getBillingAddress()
+    {
+        return $this->billingAddress;
     }
 
     /**

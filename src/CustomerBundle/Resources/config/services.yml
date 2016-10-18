@@ -4,3 +4,9 @@ services:
         arguments: 
             - "@translator.default"
             - "@doctrine.orm.default_entity_manager"
+            
+    address.service:
+        class: CustomerBundle\Service\AddressService
+        arguments: 
+            - "@translator.default"
+            - "@doctrine.orm.default_entity_manager"            

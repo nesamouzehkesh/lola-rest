@@ -12,41 +12,38 @@ class AddressRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
      * 
-     * @return type
+     * @param type $customerId
+     * @param type $addressType
+     * 
+     * @return Address|null
      */
     public function getAddress($customerId, $addressType)
     {
         $qb = $this->createQueryBuilder('ad')
-            ->select(
-                  'ad.street, '
-                . 'ad.city, '
-                . 'ad.state, '
-                . 'ad.country, '
-                . 'ad.zip '
-                )
+            ->select('ad')
             ->join('ad.customer', 'cus')
             ->where('cus.id = :id AND ad.type = :type')
             ->setParameter('id', $customerId)
             ->setParameter('type', $addressType);
         
-        return $qb->getQuery()->getSingleResult();
-    }  
+        return $qb->getQuery()->getOneOrNullResult();
+    }
     
+    /**
+     * 
+     * @param type $customerId
+     * @param type $addressType
+     * @return type
+     */
     public function getPrimaryAddress($customerId, $addressType)
     {
         $qb = $this->createQueryBuilder('ad')
-            ->select(
-                  'ad.street, '
-                . 'ad.city, '
-                . 'ad.state, '
-                . 'ad.country, '
-                . 'ad.zip '
-                )
+            ->select('ad')
             ->join('ad.customer', 'cus')
             ->where('cus.id = :id AND ad.type = :type AND ad.primary = true')
             ->setParameter('id', $customerId)
             ->setParameter('type', $addressType);
         
-        return $qb->getQuery()->getSingleResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 } 
