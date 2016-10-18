@@ -111,7 +111,7 @@ class OrderController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $customer = $this->get('customer.service')->getCustomer();
         
-   /***/if (isset($param['shipping'])) { //if there are already enterred addresses
+        if (isset($param['shipping'])) { //if there are already enterred addresses
             if ($param['setNewShipping']) { //if user wants to again enter another address for sh
                $shipping = $this->makeNewAddress($customer, $param['newShipping'], 
                     Address::TYPE_SHIPPING, $param[' setNewShippingAsPrimary']); 
@@ -139,7 +139,7 @@ class OrderController extends FOSRestController
                 }
             }
         }
-   /***/else { //if user has yet no addresses:
+        else { //if user has yet no addresses:
             $shipping = $this->makeNewAddress($customer, $param['newShipping'], 
                 Address::TYPE_SHIPPING, true); //make sure it's primary
             if ($param['sameAddress']) { //use it as billing too?
