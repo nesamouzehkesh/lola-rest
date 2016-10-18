@@ -123,19 +123,19 @@ class OrderController extends FOSRestController
                          $billing = $this->makeNewAddress($customer, $param['newBilling'],   
                             Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
                      } else { //otherwise if it wants to keep the previous billing address:
-                          $billing = getAddress($customer, $type = 'Address::TYPE_BILLING'); 
+                          $billing = $this->getAddress($customer, Address::TYPE_BILLING); 
                         }
                     }
                 }
             else { //if user does not intend to add a new address for sh besides the previous one:
-                $shipping = getAddress($customer, $type = 'Address::TYPE_SHIPPING');
+                $shipping = $this->getAddress($customer, Address::TYPE_SHIPPING);
                 
                 if ($param['setNewBilling']) { //if user wants a new billing address
                      $billing = $this->makeNewAddress($customer, $param['newBilling'],   
                         Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
                 }
                 else { //if user does not intend to add a new address for b besides the previous one:
-                   $billing = getAddress($customer, $type = 'Address::TYPE_BILLING'); 
+                   $billing = $this->getAddress($customer, Address::TYPE_BILLING); 
                 }
             }
         }
@@ -147,7 +147,7 @@ class OrderController extends FOSRestController
                      Address::TYPE_BILLING,  true);   
             } else // if user wants a different new billing address:
                 {
-                    $billing = makeAddress ($param['newShipping'],'Billing',true);//make sure it's primary
+                    $billing = $this->makeAddress($param['newShipping'],'Billing',true);//make sure it's primary
                 }
         }
           
