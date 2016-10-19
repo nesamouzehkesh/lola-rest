@@ -93,20 +93,21 @@ class ProductController extends FOSRestController
         // // is sent to this api by POST method not GET
         //$data = $request->query->get('product');
         
-        if (!isset($data['categories'])) { //because if user does not select any category, there will be an error
+        //Because if user does not select any category, there will be an error
+        if (!isset($data['categories'])) { 
             $data['categories'] = array();
         }
-        if (!isset($data['labels'])) { //because if user does not select any label, there will be an error
+        //Because if user does not select any label, there will be an error
+        if (!isset($data['labels'])) { 
             $data['labels'] = array();
         }
-        
-        if (isset($data['id'])) { //if it is editing and not adding a new item
-            // Find that product for editing
+        //If it is editing and not adding a new item find that product for editing
+        if (isset($data['id'])) { 
             $product = $em->getRepository('ProductBundle:Product')->find($data['id']);
-            // that product has categories; Get the ids of the categories selected in dropdown
+            // That product has categories; Get the ids of the categories selected in dropdown
             $ids = array();
             foreach ($data['categories'] as $key => $category) {  //current categories (before and now)
-                // we need the category index to be same as the index for ids
+                // We need the category index to be same as the index for ids
                 // This $key will be used as $index
                 $ids[$key] = $category['id'];
             }

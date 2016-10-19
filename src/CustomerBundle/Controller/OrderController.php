@@ -99,7 +99,7 @@ class OrderController extends FOSRestController
      */ 
     public function submitOrderAction(Request $request)
     {
-        //make the order object in this action, compelete it with everything and 
+        //Make the order object in this action, compelete it with everything and 
         //return it to the frontend 
         $param = $request->request->all();
         var_dump($param);
@@ -109,31 +109,57 @@ class OrderController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $customer = $this->get('customer.service')->getCustomer();
         
-        if (isset($param['shipping'])) { //if there are already enterred addresses
-            if ($param['setNewShipping']) { //if user wants to again enter another address for sh
-               $shipping = $addressService->makeAddress($customer, $param['newShipping'], 
-                    Address::TYPE_SHIPPING, $param[' setNewShippingAsPrimary']); 
-                if ($param['sameAddress']) { // use this as billing too
-                    $billing = $addressService->makeAddress($customer, $param['newShipping'],   
-                       Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
-                } else { //if user does not want to use this sh as b too then:
-                     if ($param['setNewBilling']) { //if it wants a new b address then:
-                         $billing = $addressService->makeAddress($customer, $param['newBilling'],   
-                            Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
-                     } else { //otherwise if it wants to keep the previous billing address:
-                          $billing = $addressService->getAddress($customer, Address::TYPE_BILLING); 
+        //If there are already enterred addresses
+        if (isset($param['shipping'])) { 
+            //If user wants to again enter another address for sh
+            if ($param['setNewShipping']) { 
+                $shipping = $addressService->makeAddress(
+                    $customer, 
+                    $param['newShipping'], 
+                    Address::TYPE_SHIPPING, 
+                    $param['setNewShippingAsPrimary']); 
+                //Use this as billing too
+                if ($param['sameAddress']) { 
+                    $billing = $addressService->makeAddress(
+                        $customer, 
+                        $param['newShipping'],   
+                        Address::TYPE_BILLING, 
+                        $param['setNewBillingAsPrimary']); 
+                //If user does not want to use this sh as b too then:
+                } else {
+                    //If it wants a new b address then:
+                    if ($param['setNewBilling']) { 
+                        $billing = $addressService->makeAddress(
+                            $customer, 
+                            $param['newBilling'],   
+                           Address::TYPE_BILLING, 
+                            $param['setNewBillingAsPrimary']);
+                    //Otherwise if it wants to keep the previous billing address:
+                    } else { 
+                          $billing = $addressService->getAddress(
+                              $customer, 
+                              Address::TYPE_BILLING); 
                         }
                     }
                 }
-            else { //if user does not intend to add a new address for sh besides the previous one:
-                $shipping = $addressService->getAddress($customer, Address::TYPE_SHIPPING);
-                
-                if ($param['setNewBilling']) { //if user wants a new billing address
-                     $billing = $addressService->makeAddress($customer, $param['newBilling'],   
-                        Address::TYPE_BILLING, $param['setNewBillingAsPrimary']); 
+            //If user does not intend to add a new address for sh besides the previous one:    
+            else { 
+                $shipping = $addressService->getAddress(
+                    $customer, 
+                    Address::TYPE_SHIPPING);
+                //if user wants a new billing address
+                if ($param['setNewBilling']) {
+                     $billing = $addressService->makeAddress(
+                        $customer, 
+                        $param['newBilling'],   
+                        Address::TYPE_BILLING, 
+                        $param['setNewBillingAsPrimary']); 
                 }
-                else { //if user does not intend to add a new address for b besides the previous one:
-                   $billing = $addressService->getAddress($customer, Address::TYPE_BILLING); 
+                //If user does not intend to add a new address for b besides the previous one:
+                else { 
+                   $billing = $addressService->getAddress(
+                       $customer, 
+                       Address::TYPE_BILLING); 
                 }
             }
         // Else user has yet no addresses:
@@ -152,7 +178,7 @@ class OrderController extends FOSRestController
                     Address::TYPE_BILLING, 
                     true
                     );   
-            // if user wants a different new billing address:     
+            // If user wants a different new billing address:     
             } else {
                 $billing = $addressService->makeAddress(
                     $customer, 
@@ -184,16 +210,16 @@ class OrderController extends FOSRestController
             $em->persist($orderDetail);
         }
         
-        //we can now persist the order object
+        //We can now persist the order object
         $em->persist($order);
         $em->flush();
         
-        //we now have to empty the basket items for this customer:
+        //We now have to empty the basket items for this customer:
         foreach ($items as $item) {
             $this->get('app.service')->deleteEntity($item);
         }
-        
-        return array('id' => $order->getId()); //frontend only needs this order object's id       
+        //Frontend only needs this order object's id  
+        return array('id' => $order->getId());      
     }
     
     /**
