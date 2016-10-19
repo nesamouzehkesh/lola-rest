@@ -58,10 +58,9 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
      */
     public function getCustomerAddress($customerId)
     {
-    $address = array();  
-    
-    // generate shipping array for the address object
-    $qb = $this->createQueryBuilder('cus')
+        $address = array();  
+        // generate shipping array for the address object
+        $qb = $this->createQueryBuilder('cus')
             ->select(
                   'ad.street, '
                 . 'ad.city, '
@@ -70,34 +69,28 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
                 . 'ad.country'
                 )
             ->join('cus.addresses', 'ad')
-            ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 1')
+            ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 1 AND ad.primary = true')
             ->setParameter('customerId', $customerId);
 
-    $shipping = $qb->getQuery()->getOneOrNullResult();  //SingleResult gives you an object, ScalarResult gives you an array of objects
+        $shipping = $qb->getQuery()->getOneOrNullResult();  //SingleResult gives you an object, ScalarResult gives you an array of objects
+        $address['shipping'] = $shipping;
 
-    $address['shipping'] = $shipping;
+        //generate billing array for the address object
+        $qb = $this->createQueryBuilder('cus')
+            ->select(
+                  'ad.street, '
+                . 'ad.city, '
+                . 'ad.state,'
+                . 'ad.zip,'
+                . 'ad.country'
+                )
+            ->join('cus.addresses', 'ad')
+            ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 2 AND ad.primary = true')
+            ->setParameter('customerId', $customerId);
 
-    //generate billing array for the address object
-    $qb = $this->createQueryBuilder('cus')
-        ->select(
-              'ad.street, '
-            . 'ad.city, '
-            . 'ad.state,'
-            . 'ad.zip,'
-            . 'ad.country'
-            )
-        ->join('cus.addresses', 'ad')
-        ->where('cus.deleted = false AND ad.deleted = false AND cus.id = :customerId AND ad.type = 2')
-        ->setParameter('customerId', $customerId);
+        $billing = $qb->getQuery()->getOneOrNullResult();
+        $address['billing'] = $billing;
 
-    $billing = $qb->getQuery()->getOneOrNullResult();
-
-    $address['billing'] = $billing;
-
-
-    return $address;
-
+        return $address;
     } 
-    
-    
 }
