@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use CustomerBundle\Entity\Order;
+use CustomerBundle\Entity\OrderDetail;
 use CustomerBundle\Entity\Address;
 
 class OrderController extends FOSRestController
@@ -99,67 +100,67 @@ class OrderController extends FOSRestController
      */ 
     public function submitOrderAction(Request $request)
     {
-        //Make the order object in this action, compelete it with everything and 
-        //return it to the frontend 
-        $param = $request->request->all();
-        var_dump($param);
-        
-        $addressService = $this->get('address.service');
-        
         $em = $this->getDoctrine()->getManager();
+        $param = $request->request->all();
+        $addressService = $this->get('address.service');
         $customer = $this->get('customer.service')->getCustomer();
         
-        //If there are already enterred addresses
+        // If there are already enterred addresses
         if (isset($param['shipping'])) { 
-            //If user wants to again enter another address for sh
+            // If user wants to again enter another address for sh
             if ($param['setNewShipping']) { 
                 $shipping = $addressService->makeAddress(
                     $customer, 
                     $param['newShipping'], 
                     Address::TYPE_SHIPPING, 
-                    $param['setNewShippingAsPrimary']); 
-                //Use this as billing too
+                    $param['setNewShippingAsPrimary']
+                    ); 
+                // Use this as billing too
                 if ($param['sameAddress']) { 
                     $billing = $addressService->makeAddress(
                         $customer, 
                         $param['newShipping'],   
                         Address::TYPE_BILLING, 
-                        $param['setNewBillingAsPrimary']); 
-                //If user does not want to use this sh as b too then:
+                        $param['setNewBillingAsPrimary']
+                        ); 
+                // If user does not want to use this sh as b too then:
                 } else {
-                    //If it wants a new b address then:
+                    // If it wants a new b address then:
                     if ($param['setNewBilling']) { 
                         $billing = $addressService->makeAddress(
                             $customer, 
                             $param['newBilling'],   
-                           Address::TYPE_BILLING, 
-                            $param['setNewBillingAsPrimary']);
-                    //Otherwise if it wants to keep the previous billing address:
+                            Address::TYPE_BILLING, 
+                            $param['setNewBillingAsPrimary']
+                            );
+                    // Otherwise if it wants to keep the previous billing address:
                     } else { 
-                          $billing = $addressService->getAddress(
-                              $customer, 
-                              Address::TYPE_BILLING); 
-                        }
+                        $billing = $addressService->getAddress(
+                            $customer, 
+                            Address::TYPE_BILLING
+                            ); 
                     }
                 }
-            //If user does not intend to add a new address for sh besides the previous one:    
-            else { 
+            // Else If user does not intend to add a new address for sh besides the previous one:    
+            } else { 
                 $shipping = $addressService->getAddress(
                     $customer, 
-                    Address::TYPE_SHIPPING);
-                //if user wants a new billing address
+                    Address::TYPE_SHIPPING
+                    );
+                // If user wants a new billing address
                 if ($param['setNewBilling']) {
-                     $billing = $addressService->makeAddress(
+                    $billing = $addressService->makeAddress(
                         $customer, 
                         $param['newBilling'],   
                         Address::TYPE_BILLING, 
-                        $param['setNewBillingAsPrimary']); 
-                }
-                //If user does not intend to add a new address for b besides the previous one:
-                else { 
-                   $billing = $addressService->getAddress(
-                       $customer, 
-                       Address::TYPE_BILLING); 
+                        $param['setNewBillingAsPrimary']
+                        ); 
+                // Else if user does not intend to add a new address for b besides the previous one:
+                } else { 
+                    $billing = $addressService->getAddress(
+                        $customer, 
+                        Address::TYPE_BILLING
+                        ); 
                 }
             }
         // Else user has yet no addresses:
@@ -188,25 +189,25 @@ class OrderController extends FOSRestController
                     );
             }
         }
-          
-        $order = new Order;
         
+        // Create a new Order Object
+        $order = new Order;
         $order->setShippingAddress($shipping); //order.shippingAddress
         $order->setBillingAddress($billing);   //order.billingAddress
+        $order->setCustomer($customer);
         
+        // Get all basket items
         $items = $this->getDoctrine()
             ->getManager()
             ->getRepository('CustomerBundle:Basket')
             ->getBasketItems($customer, false);
-       
-        $order->setCustomer($customer);
+        // Add each basket item to order as an order details
         foreach ($items as $item) {
             $orderDetail = new OrderDetail();
             $orderDetail->setQuantity($item->getQuantity()); 
             $orderDetail->setProduct($item->getProduct());   
             $orderDetail->setOrder($order);
             $order->addOrderDetail($orderDetail);
-
             $em->persist($orderDetail);
         }
         
@@ -214,11 +215,12 @@ class OrderController extends FOSRestController
         $em->persist($order);
         $em->flush();
         
-        //We now have to empty the basket items for this customer:
+        // We now have to empty the basket items for this customer:
         foreach ($items as $item) {
             $this->get('app.service')->deleteEntity($item);
         }
-        //Frontend only needs this order object's id  
+        
+        // Frontend only needs this order object's id  
         return array('id' => $order->getId());      
     }
     

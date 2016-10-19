@@ -31,17 +31,16 @@ class AddressRepository extends \Doctrine\ORM\EntityRepository
     
     /**
      * 
-     * @param type $customerId
+     * @param type $customer
      * @param type $addressType
      * @return type
      */
-    public function getPrimaryAddress($customerId, $addressType)
+    public function getPrimaryAddress($customer, $addressType)
     {
         $qb = $this->createQueryBuilder('ad')
             ->select('ad')
-            ->join('ad.customer', 'cus')
-            ->where('cus.id = :id AND ad.type = :type AND ad.primary = true')
-            ->setParameter('id', $customerId)
+            ->where('ad.customer = :customer AND ad.type = :type AND ad.primary = true')
+            ->setParameter('customer', $customer)
             ->setParameter('type', $addressType);
         
         return $qb->getQuery()->getOneOrNullResult();
