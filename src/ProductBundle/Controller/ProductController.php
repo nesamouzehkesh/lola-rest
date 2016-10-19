@@ -119,7 +119,6 @@ class ProductController extends FOSRestController
                 $lIds[$key] = $label['id'];
             } 
             
-            
             foreach ($product->getProductCategories() as $pCategory) { //from ProductCategory table
                 $categoryId = $pCategory->getCategory()->getId();
                 if (in_array($categoryId, $ids)) {  
@@ -137,16 +136,15 @@ class ProductController extends FOSRestController
             $labelRelations = $em->getRepository('LabelBundle:LabelRelation')->
                 getEntityLabels($product->getId(),'product');
             foreach ($labelRelations as $labelR) { //by means of LabelRelation repository
-             $labelId = $labelR->getId();
-             if (in_array($labelId, $lIds)) {  
-                 $index = array_search($labelId, $lIds); //returns the index of the searched-and-found element
-                 // remove it from data category so we don't insert it again
-                 unset($data['labels'][$index]); 
-             } else {
-                 $this->get('app.service')->deleteEntity($label); 
-             }
-         }
-            
+                $labelId = $labelR->getId();
+                if (in_array($labelId, $lIds)) {  
+                    $index = array_search($labelId, $lIds); //returns the index of the searched-and-found element
+                    // remove it from data category so we don't insert it again
+                    unset($data['labels'][$index]); 
+                } else {
+                    $this->get('app.service')->deleteEntity($label); 
+                }
+            }
         } else {
             // Create a new Product object for add
             $product = new Product();
@@ -155,22 +153,31 @@ class ProductController extends FOSRestController
         $product->setName($data['name']);
         $product->setPrice($data['price']);
         
+        // Set product brand
+        if (isset($data['brand'])) {
+            $brand = $em->getReference('ProductBundle:Brand', $data['brand']['id']);
+            $product->setBrand($brand);
+        }
+        
+        // Set product description
         if (isset($data['description'])) {
             $product->setDescription($data['description']);
         }
         
+        // Add selected categories to the product
         foreach ($data['categories'] as $item) {
             $category = $em
                 ->getRepository('ProductBundle:Category')
                 ->find($item['id']);
-
+            
             $productCategory = new ProductCategory();
             $productCategory->setProduct($product);
             $productCategory->setCategory($category);
             
             $em->persist($productCategory);
         }
-            
+        
+        // Add selected labels to the product
         foreach ($data['labels'] as $item) {
             $label = $em
                 ->getRepository('LabelBundle:Label')
@@ -186,7 +193,6 @@ class ProductController extends FOSRestController
 
         // Persist $product
         $em->persist($product);
-        
         $em->flush();
         
         // You can expose whatever you want to your frontend here, such as 

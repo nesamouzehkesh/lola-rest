@@ -51,8 +51,6 @@ class AddressService
             $previousAddress = $this->em
                 ->getRepository('CustomerBundle:Address')
                 ->getPrimaryAddress($customer, $type);
-        echo "aa";
-        exit;
             
             if ($previousAddress instanceof Address) {
                 $previousAddress->setPrimary(false); 
