@@ -95,46 +95,11 @@ class ProductRepository extends EntityRepository
     }
     
     /**
-     * Testing with a manual array for frontend product categories listing
-     * 
-     * @return type
-     */
-    public function getStaticProducts($criteria = null)
-    {
-       return array(
-            array(
-                'id' => '1',
-                'name' => 'A',
-                'description' =>'a',
-                'categories' => array(
-                    array('id' => '23', 
-                          'name' => 'Cat1'
-                        ),
-                    array('id' => '24', 
-                          'name' => 'Cat2'
-                        )
-                    )
-                ),
-            array(
-                'id' => '2',
-                'name' => 'B',
-                'description' => 'b',
-                'categories' => array(
-                    array('id' => '17',
-                        'name' => 'Cat3'),
-                    array('id' => '17',
-                        'name' => 'Cat3')
-                )
-            )
-        ); 
-    }
-    
-    /**
      * 
      * @return type
      */
     public function getProduct($id)
-    {
+    {   
         $qb = $this->createQueryBuilder('p')
             ->select(
                   'p.id, '
@@ -178,7 +143,6 @@ class ProductRepository extends EntityRepository
             ->setParameter('entityName', 'product');
 
         $product['labels'] = $qb->getQuery()->getScalarResult();
-        
         
         return $product;
     }    

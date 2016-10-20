@@ -28,7 +28,7 @@ class AppKernel extends Kernel
             new PageBundle\PageBundle(),
             new ThemeBundle\ThemeBundle(),
             new LabelBundle\LabelBundle(),
-            new CustomerBundle\CustomerBundle(),
+            new ShopBundle\ShopBundle(),
             new UserBundle\UserBundle(),
         ];
 

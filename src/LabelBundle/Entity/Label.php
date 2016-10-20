@@ -3,7 +3,6 @@
 namespace LabelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Library\Base\BaseEntity;
 
 /**
@@ -187,8 +186,6 @@ class Label extends BaseEntity
     {
         $this->labelRelations->removeElement($labelRelation);
     }
-
-    
 
     /**
      * Get labelRelations

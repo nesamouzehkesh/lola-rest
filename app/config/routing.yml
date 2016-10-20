@@ -15,20 +15,25 @@ label_bundle:
     resource: "@LabelBundle/Resources/config/routes.yml"    
     prefix: / 
     
-customer_bundle:
-    resource: "@CustomerBundle/Resources/config/routes.yml"    
+shop_bundle:
+    resource: "@ShopBundle/Resources/config/routes.yml"    
     prefix: / 
-    
-app:
+        
+user_bundle:
+    resource: "@UserBundle/Resources/config/routes.yml"    
+    prefix: / 
+        
+app_bundle:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
 
-    
 admin_login:
     path:     /login/{isFront}
     defaults: { _controller: AppBundle:Security:login, isFront: false }
+    
 api_login_check:
     path: /api/login_check
+    
 admin_logout:
     path: /admin/logout    

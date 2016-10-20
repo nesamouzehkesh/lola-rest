@@ -43,11 +43,11 @@ class User
     private $email;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="phone", type="string", length=255)
+     * @ORM\Column(name="phoneNumber", type="integer")
      */
-    private $phone;
+    private $phoneNumber;
 
     /**
      * @var string
@@ -55,7 +55,40 @@ class User
      * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="gender", type="integer")
+     */
+    private $gender;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="customer")
+     */
+    private $orders;
 
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="dob", type="date")
+     */
+    private $dob;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="customer")
+     */
+    private $addresses;    
+
+    /**
+     * 
+     */
+    public function __construct() 
+    {
+        parent::__construct();
+        
+        $this->orders = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+    }
 
     /**
      * Get id

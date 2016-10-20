@@ -47,11 +47,11 @@ class ProductCategory extends BaseEntity
     /**
      * Set product
      *
-     * @param \ProductBundle\Entity\Product $product
+     * @param Product $product
      *
      * @return ProductCategory
      */
-    public function setProduct(\ProductBundle\Entity\Product $product = null)
+    public function setProduct(Product $product = null)
     {
         $this->product = $product;
 
@@ -61,7 +61,7 @@ class ProductCategory extends BaseEntity
     /**
      * Get product
      *
-     * @return \ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -71,11 +71,11 @@ class ProductCategory extends BaseEntity
     /**
      * Set category
      *
-     * @param \ProductBundle\Entity\Category $category
+     * @param Category $category
      *
      * @return ProductCategory
      */
-    public function setCategory(\ProductBundle\Entity\Category $category = null)
+    public function setCategory(Category $category = null)
     {
         $this->category = $category;
 
@@ -85,7 +85,7 @@ class ProductCategory extends BaseEntity
     /**
      * Get category
      *
-     * @return \ProductBundle\Entity\Category
+     * @return Category
      */
     public function getCategory()
     {

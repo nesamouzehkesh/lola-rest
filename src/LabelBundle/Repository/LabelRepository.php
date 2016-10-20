@@ -1,6 +1,7 @@
 <?php
 
 namespace LabelBundle\Repository;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -11,24 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class LabelRepository extends EntityRepository
 {
-/**
-*
-* @param type $criteria
-* @return type
-*/
-    public function getLabels($criteria = null) {
-
-    $qb = $this->createQueryBuilder('label')
-        ->select(
-            'label.id, '
-           .'label.name, '
-           .'label.description ' 
+    /**
+    *
+    * @param type $criteria
+    * @return type
+    */
+    public function getLabels($criteria = null) 
+    {
+        $qb = $this->createQueryBuilder('label')
+            ->select(
+                'label.id, '
+               .'label.name, '
+               .'label.description ' 
             )
             ->where('label.deleted = false');
 
-    $labels = $qb->getQuery()->getScalarResult();
+        $labels = $qb->getQuery()->getScalarResult();
 
-    return $labels;
+        return $labels;
     }
     
      /**

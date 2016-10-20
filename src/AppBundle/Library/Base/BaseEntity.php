@@ -18,6 +18,11 @@ class BaseEntity
      * @ORM\Column(name="deleted_time", type="bigint", nullable=true)
      */
     protected $deletedTime;
+
+    /**
+     * @ORM\Column(name="created_time", type="bigint", nullable=true)
+     */
+    protected $createdTime;
     
     /**
      * 
@@ -25,6 +30,7 @@ class BaseEntity
     public function __construct()
     {
         $this->deleted = false;
+        $this->createdTime = time();
     }
 
     /**
@@ -79,5 +85,14 @@ class BaseEntity
     public function getDeletedTime()
     {
         return $this->deletedTime;
-    }    
+    }   
+    
+    /**
+     * Get createdTime
+     * @return integer
+     */
+    public function getCreatedTime()
+    {
+        return $this->createdTime;
+    }       
 }

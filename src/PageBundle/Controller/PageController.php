@@ -13,11 +13,10 @@ use PageBundle\Entity\Page;
 
 class PageController extends FOSRestController
 {
-    
     /**
      * @ApiDoc()
      * 
-     * @Get("/pages", name="api_admin_get_pages", options={ "method_prefix" = false })
+     * @Get("/pages", name="api_admin_page_get_pages", options={ "method_prefix" = false })
     */
     public function getPagesAction(Request $request)
     {
@@ -32,13 +31,12 @@ class PageController extends FOSRestController
             ->getPages($criteria);
         
         return $pages;
-        
     }
     
     /**
      * @ApiDoc()
      * 
-     * @Get("/page/{id}", defaults={"id": null}, name="api_admin_get_page", options={ "method_prefix" = false })
+     * @Get("/pages/{id}", defaults={"id": null}, name="api_admin_page_get_page", options={ "method_prefix" = false })
     */
     public function getPageAction($id)
     {
@@ -55,7 +53,7 @@ class PageController extends FOSRestController
      * 
      * @ApiDoc()
      * 
-     * @Delete("/page/{id}", name="api_admin_delete_page", options={ "method_prefix" = false })
+     * @Delete("/pages/{id}", name="api_admin_page_delete_page", options={ "method_prefix" = false })
      */ 
     public function deletePageAction($id)
     {
@@ -81,7 +79,7 @@ class PageController extends FOSRestController
     /**
      * @ApiDoc()
      * 
-     * @Post("/page", name="api_admin_post_page", options={ "method_prefix" = false })
+     * @Post("/pages", name="api_admin_page_post_page", options={ "method_prefix" = false })
      */ 
     public function postPageAction(Request $request)
     {
@@ -105,10 +103,10 @@ class PageController extends FOSRestController
         
         // Persist $page
         $em->persist($page);
-        
         $em->flush();
         
-        //You can expose whatever you want to your frontend here, such as pageId in this case
+        // You can expose whatever you want to your frontend here, such as 
+        // pageId in this case
         return array(
             'id' => $page->getId(),
             'name' => $page->getName()

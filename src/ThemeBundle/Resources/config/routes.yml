@@ -1,5 +1,8 @@
-product:
-    resource: ThemeBundle\Controller\ThemeController
+# Admin part
+theme_admin:
+    resource: ThemeBundle\Controller\ThemeAdminController
     type:     rest
     prefix:   /api/admin/theme
+    
+# Shop part  
     

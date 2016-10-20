@@ -42,7 +42,6 @@ class LabelRelation extends BaseEntity
      */
     private $label;
     
-    
     /**
      * Get id
      *

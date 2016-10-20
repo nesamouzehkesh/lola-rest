@@ -1,5 +1,7 @@
-page:
-    resource: PageBundle\Controller\PageController
+# Admin part 
+page_admin:
+    resource: PageBundle\Controller\PageAdminController
     type:     rest
     prefix:   /api/admin/page
     
+# Shop part

@@ -1,0 +1,21 @@
+# Admin part
+order_admin:
+    resource: ShopBundle\Controller\OrderAdminController
+    type:     rest
+    prefix:   /api/admin/order
+    
+# Shop part    
+basket:
+    resource: ShopBundle\Controller\BasketController
+    type:     rest
+    prefix:   /api/shop/basket
+
+wishlist:
+    resource: ShopBundle\Controller\WishlistController
+    type:     rest
+    prefix:   /api/shop/wishlist
+    
+order:
+    resource: ShopBundle\Controller\OrderController
+    type:     rest
+    prefix:   /api/shop/order    

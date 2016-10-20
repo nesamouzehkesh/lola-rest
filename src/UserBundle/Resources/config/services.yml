@@ -1,4 +1,12 @@
 services:
-#    user.example:
-#        class: UserBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    user.service:
+        class: UserBundle\Service\UserService
+        arguments: 
+            - "@translator.default"
+            - "@doctrine.orm.default_entity_manager"
+            
+    address.service:
+        class: UserBundle\Service\AddressService
+        arguments: 
+            - "@translator.default"
+            - "@doctrine.orm.default_entity_manager"            

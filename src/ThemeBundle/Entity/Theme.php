@@ -5,7 +5,6 @@ namespace ThemeBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Library\Base\BaseEntity;
 
-
 /**
  * Theme
  *
@@ -43,7 +42,6 @@ class Theme extends BaseEntity
      * @ORM\Column(name="isActive", type="boolean")
      */
     private $isActive;
-
 
     /**
      * Get id

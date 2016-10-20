@@ -1,21 +1,21 @@
 # Admin part
-product:
-    resource: ProductBundle\Controller\ProductController
+product_admin:
+    resource: ProductBundle\Controller\ProductAdminController
     type:     rest
     prefix:   /api/admin/product
     
-category:
-    resource: ProductBundle\Controller\CategoryController
+category_admin:
+    resource: ProductBundle\Controller\CategoryAdminController
     type:     rest
     prefix:   /api/admin/category
     
-brand:
-    resource: ProductBundle\Controller\BrandController
+brand_admin:
+    resource: ProductBundle\Controller\BrandAdminController
     type:     rest
-    prefix:   /api/admin/brand   
-
-# Customer access part    
-customer:
-    resource: ProductBundle\Controller\CustomerController
+    prefix:   /api/admin/brand
+    
+# Shop part    
+product:
+    resource: ProductBundle\Controller\ProductController
     type:     rest
-    prefix:   /api/customer/product
+    prefix:   /api/shop/product    

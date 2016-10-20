@@ -1,5 +1,7 @@
-label:
-    resource: LabelBundle\Controller\LabelController
+# Admin part    
+label_admin:
+    resource: LabelBundle\Controller\LabelAdminController
     type:     rest
     prefix:   /api/admin/label
     
+# Shop part

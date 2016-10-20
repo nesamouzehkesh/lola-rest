@@ -127,11 +127,11 @@ class Category extends BaseEntity
     /**
      * Add productCategory
      *
-     * @param \ProductBundle\Entity\ProductCategory $productCategory
+     * @param ProductCategory $productCategory
      *
      * @return Category
      */
-    public function addProductCategory(\ProductBundle\Entity\ProductCategory $productCategory)
+    public function addProductCategory(ProductCategory $productCategory)
     {
         $this->productCategories[] = $productCategory;
 
@@ -141,9 +141,9 @@ class Category extends BaseEntity
     /**
      * Remove productCategory
      *
-     * @param \ProductBundle\Entity\ProductCategory $productCategory
+     * @param ProductCategory $productCategory
      */
-    public function removeProductCategory(\ProductBundle\Entity\ProductCategory $productCategory)
+    public function removeProductCategory(ProductCategory $productCategory)
     {
         $this->productCategories->removeElement($productCategory);
     }

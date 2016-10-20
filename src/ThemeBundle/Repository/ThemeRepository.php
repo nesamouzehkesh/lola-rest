@@ -4,7 +4,6 @@ namespace ThemeBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-
 /**
  * ThemeRepository
  *
@@ -56,5 +55,4 @@ class ThemeRepository extends \Doctrine\ORM\EntityRepository
         
         return $qb->getQuery()->getSingleResult();
     }    
-    
 }

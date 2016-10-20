@@ -1,6 +1,0 @@
-services:    
-    customer.service:
-        class: CustomerBundle\Service\CustomerService
-        arguments: 
-            - "@translator.default"
-            - "@doctrine.orm.default_entity_manager"

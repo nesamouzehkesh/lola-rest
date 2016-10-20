@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Library\Base\BaseEntity;
 
-
 /**
  * Product
  *
@@ -78,7 +77,7 @@ class Product extends BaseEntity
     private $brand;
     
     /**
-     * @ORM\OneToMany(targetEntity="CustomerBundle\Entity\OrderDetail", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="ShopBundle\Entity\OrderDetail", mappedBy="product")
      */
     private $orderDetails;
     
@@ -249,11 +248,11 @@ class Product extends BaseEntity
     /**
      * Add productCategory
      *
-     * @param \ProductBundle\Entity\ProductCategory $productCategory
+     * @param ProductCategory $productCategory
      *
      * @return Product
      */
-    public function addProductCategory(\ProductBundle\Entity\ProductCategory $productCategory)
+    public function addProductCategory(ProductCategory $productCategory)
     {
         $this->productCategories[] = $productCategory;
 
@@ -263,9 +262,9 @@ class Product extends BaseEntity
     /**
      * Remove productCategory
      *
-     * @param \ProductBundle\Entity\ProductCategory $productCategory
+     * @param ProductCategory $productCategory
      */
-    public function removeProductCategory(\ProductBundle\Entity\ProductCategory $productCategory)
+    public function removeProductCategory(ProductCategory $productCategory)
     {
         $this->productCategories->removeElement($productCategory);
     }
@@ -291,11 +290,11 @@ class Product extends BaseEntity
     /**
      * Set brand
      *
-     * @param \ProductBundle\Entity\Brand $brand
+     * @param Brand $brand
      *
      * @return Product
      */
-    public function setBrand(\ProductBundle\Entity\Brand $brand = null)
+    public function setBrand(Brand $brand = null)
     {
         $this->brand = $brand;
 
@@ -315,11 +314,11 @@ class Product extends BaseEntity
     /**
      * Add orderDetail
      *
-     * @param \CustomerBundle\Entity\OrderDetail $orderDetail
+     * @param \ShopBundle\Entity\OrderDetail $orderDetail
      *
      * @return Product
      */
-    public function addOrderDetail(\CustomerBundle\Entity\OrderDetail $orderDetail)
+    public function addOrderDetail(\ShopBundle\Entity\OrderDetail $orderDetail)
     {
         $this->orderDetails[] = $orderDetail;
 
@@ -329,9 +328,9 @@ class Product extends BaseEntity
     /**
      * Remove orderDetail
      *
-     * @param \CustomerBundle\Entity\OrderDetail $orderDetail
+     * @param \ShopBundle\Entity\OrderDetail $orderDetail
      */
-    public function removeOrderDetail(\CustomerBundle\Entity\OrderDetail $orderDetail)
+    public function removeOrderDetail(\ShopBundle\Entity\OrderDetail $orderDetail)
     {
         $this->orderDetails->removeElement($orderDetail);
     }
@@ -345,6 +344,4 @@ class Product extends BaseEntity
     {
         return $this->orderDetails;
     }
-
-  
 }

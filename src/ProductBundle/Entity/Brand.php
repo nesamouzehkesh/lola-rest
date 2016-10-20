@@ -5,7 +5,6 @@ namespace ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Library\Base\BaseEntity;
 
-
 /**
  * Brand
  *
@@ -37,12 +36,10 @@ class Brand extends BaseEntity
      */
     private $description;
     
-    
     /**
      * @ORM\OneToMany(targetEntity="Product", mappedBy="brand")
      */
     private $products;
-
 
     /**
      * Get id
@@ -105,11 +102,11 @@ class Brand extends BaseEntity
     /**
      * Add product
      *
-     * @param \ProductBundle\Entity\Product $product
+     * @param Product $product
      *
      * @return Brand
      */
-    public function addProduct(\ProductBundle\Entity\Product $product)
+    public function addProduct(Product $product)
     {
         $this->products[] = $product;
 
@@ -119,9 +116,9 @@ class Brand extends BaseEntity
     /**
      * Remove product
      *
-     * @param \ProductBundle\Entity\Product $product
+     * @param Product $product
      */
-    public function removeProduct(\ProductBundle\Entity\Product $product)
+    public function removeProduct(Product $product)
     {
         $this->products->removeElement($product);
     }

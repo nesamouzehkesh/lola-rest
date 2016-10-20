@@ -1,0 +1,12 @@
+# Admin part
+user_admin:
+    resource: ShopBundle\Controller\UserAdminController
+    type:     rest
+    prefix:   /api/admin/user
+    
+# Shop part    
+user:
+    resource: ShopBundle\Controller\UserController
+    type:     rest
+    prefix:   /api/shop/user
+    
