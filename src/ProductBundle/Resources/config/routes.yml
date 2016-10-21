@@ -19,3 +19,13 @@ product:
     resource: ProductBundle\Controller\ProductController
     type:     rest
     prefix:   /api/shop/product    
+    
+category:
+    resource: ProductBundle\Controller\CategoryController
+    type:     rest
+    prefix:   /api/shop/category    
+    
+brand:
+    resource: ProductBundle\Controller\BrandController
+    type:     rest
+    prefix:   /api/shop/brand    

@@ -11,7 +11,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use PageBundle\Entity\Page;
 
-class PageController extends FOSRestController
+class PageAdminController extends FOSRestController
 {
     /**
      * @ApiDoc()

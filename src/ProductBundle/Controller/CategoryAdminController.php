@@ -20,8 +20,6 @@ class CategoryAdminController extends FOSRestController
     */
     public function getCategoriesAction(Request $request)
     {
-        $id = $request->query->get('id', null);
-        
         $categories = $this
             ->getDoctrine()
             ->getEntityManager()
@@ -34,7 +32,7 @@ class CategoryAdminController extends FOSRestController
     /**
      * @ApiDoc()
      * 
-     * @Get("/category/{id}", defaults={"id": null}, name="api_admin_product_get_category", options={ "method_prefix" = false })
+     * @Get("/categories/{id}", defaults={"id": null}, name="api_admin_product_get_category", options={ "method_prefix" = false })
     */
     public function getCategoryAction($id)
     {
@@ -51,7 +49,7 @@ class CategoryAdminController extends FOSRestController
      * 
      * @ApiDoc()
      * 
-     * @Delete("/category/{id}", name="api_admin_product_delete_category", options={ "method_prefix" = false })
+     * @Delete("/categories/{id}", name="api_admin_product_delete_category", options={ "method_prefix" = false })
      */ 
     public function deleteCategoryAction($id)
     {
@@ -68,7 +66,7 @@ class CategoryAdminController extends FOSRestController
         // There is a debate if this should be a 404 or a 204
         // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
         return $this->routeRedirectView(
-            'api_admin_get_categories', 
+            'api_admin_product_get_categories', 
             array(), 
             Response::HTTP_NO_CONTENT
             );        
@@ -77,7 +75,7 @@ class CategoryAdminController extends FOSRestController
     /**
      * @ApiDoc()
      * 
-     * @Post("/category", name="api_admin_post_category", options={ "method_prefix" = false })
+     * @Post("/categories", name="api_admin_post_category", options={ "method_prefix" = false })
      */ 
     public function postCategoryAction(Request $request)
     {
@@ -97,10 +95,13 @@ class CategoryAdminController extends FOSRestController
         }
 
         $category->setName($data['name']);
+        $category->setUrl($data['url']);
+        if (isset($data['description'])) {
+            $category->setDescription($data['description']);
+        }
         
         // Persist $category
         $em->persist($category);
-        
         $em->flush();
         
         //You can expose whatever you want to your frontend here, such as categoryId in this case

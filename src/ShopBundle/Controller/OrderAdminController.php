@@ -19,14 +19,11 @@ class OrderAdminController extends FOSRestController
     */
     public function getOrdersAction(Request $request)
     {
-        /*get all existing orders*/
-        $id = $request->query->get('id', null);
-        
         $orders = $this
             ->getDoctrine()
             ->getEntityManager()
             ->getRepository('ShopBundle:Order')
-            ->getOrders($id);
+            ->getOrders();
         
         return $orders;
     }

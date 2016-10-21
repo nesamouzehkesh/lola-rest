@@ -16,6 +16,61 @@ use ShopBundle\Entity\Address;
 class OrderController extends FOSRestController
 {
     /**
+    * @ApiDoc()
+    * 
+    * @Get("/orders", name="api_shop_get_orders", options={ "method_prefix" = false })
+    */
+    public function getOrdersAction(Request $request)
+    {
+        /*get all existing orders*/
+        $user = $this->get('user.service')->getUser();
+        
+        $orders = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ShopBundle:Order')
+            ->getOrders();
+        
+        return $orders;
+    }
+     
+    /**
+     * @ApiDoc()
+     * 
+     * @Get("/orders/{id}", defaults={"id": null}, name="api_shop_get_order", options={ "method_prefix" = false })
+    */
+    public function getOrderAction($id)
+    {
+        $user = $this->get('user.service')->getUser();
+        
+        $order = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ShopBundle:Order')
+            ->getOrder($id);
+        
+        return $order;
+    }
+        
+    /**
+     * @ApiDoc()
+     * 
+     * @Get("/orders/{id}/details", defaults={"id": null}, name="api_shop_get_order_details", options={ "method_prefix" = false })
+    */
+    public function getOrderDetailsAction($id)
+    {
+        $user = $this->get('user.service')->getUser();
+        
+        $order = $this
+            ->getDoctrine()
+            ->getEntityManager()
+            ->getRepository('ShopBundle:Order')
+            ->getOrder($id);
+        
+        return $order;
+    } 
+    
+    /**
      * @ApiDoc()
      * 
      * @Post("/orders", name="api_shop_post_order", options={ "method_prefix" = false })

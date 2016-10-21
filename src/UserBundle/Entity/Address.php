@@ -8,7 +8,7 @@ use AppBundle\Library\Base\BaseEntity;
 /**
  * Address
  *
- * @ORM\Table(name="lola_address")
+ * @ORM\Table(name="lola_user_address")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\AddressRepository")
  */
 class Address extends BaseEntity

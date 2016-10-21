@@ -31,9 +31,9 @@ class Basket extends BaseEntity
 
     /**
     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-    * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
     */
-    private $customer;
+    private $user;
     
     /**
     * @ORM\ManyToOne(targetEntity="ProductBundle\Entity\Product")
@@ -78,13 +78,13 @@ class Basket extends BaseEntity
     /**
      * Set customer
      *
-     * @param \UserBundle\Entity\User $customer
+     * @param \UserBundle\Entity\User $user
      *
      * @return Basket
      */
-    public function setUser(\UserBundle\Entity\User $customer = null)
+    public function setUser(\UserBundle\Entity\User $user = null)
     {
-        $this->customer = $customer;
+        $this->user = $user;
 
         return $this;
     }
@@ -96,7 +96,7 @@ class Basket extends BaseEntity
      */
     public function getUser()
     {
-        return $this->customer;
+        return $this->user;
     }
 
     /**

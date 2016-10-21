@@ -31,13 +31,13 @@ class Order extends BaseEntity
     private $status;
     
     /**
-    * @ORM\ManyToOne(targetEntity="Address")
+    * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\Address")
     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id", nullable=true)
     */
     private $shippingAddress;
 
     /**
-    * @ORM\ManyToOne(targetEntity="Address")
+    * @ORM\ManyToOne(targetEntity="\UserBundle\Entity\Address")
     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id", nullable=true)
     */
     private $billingAddress;

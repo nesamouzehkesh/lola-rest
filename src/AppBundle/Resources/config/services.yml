@@ -5,7 +5,7 @@ services:
             - "@translator.default"
             - "@doctrine.orm.default_entity_manager"
             
-    app.md5encoder:
+    app.md5encoder.service:
         class: AppBundle\Service\Md5Encoder
         arguments: 
             - "%app_saltmain%"            

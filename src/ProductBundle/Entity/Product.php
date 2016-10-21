@@ -22,13 +22,6 @@ class Product extends BaseEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="brandId", type="integer", nullable=true)
-     */
-    private $brandId;
 
     /**
      * @var string
@@ -40,7 +33,7 @@ class Product extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
     
@@ -99,30 +92,6 @@ class Product extends BaseEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set brandId
-     *
-     * @param integer $brandId
-     *
-     * @return Product
-     */
-    public function setBrandId($brandId)
-    {
-        $this->brandId = $brandId;
-
-        return $this;
-    }
-
-    /**
-     * Get brandId
-     *
-     * @return integer
-     */
-    public function getBrandId()
-    {
-        return $this->brandId;
     }
 
     /**

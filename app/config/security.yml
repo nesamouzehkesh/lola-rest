@@ -29,9 +29,9 @@ security:
             entity: { class: UserBundle:User }    
 
     firewalls:
-        dev:
-            pattern:  ^/api/(_(profiler|wdt|doc))/
-            security: false
+        #dev:
+        #    pattern:  ^/api/(_(profiler|wdt|doc))/
+        #    security: false
 
         login:
             pattern:  ^/api/login
@@ -46,7 +46,7 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
-            pattern:   ^/api
+            pattern:   ^/api/_admin
             stateless: true
             lexik_jwt:
                 authorization_header:
@@ -58,4 +58,4 @@ security:
 
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/admin, roles: IS_AUTHENTICATED_FULLY }

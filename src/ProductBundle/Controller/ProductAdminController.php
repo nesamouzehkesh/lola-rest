@@ -72,7 +72,7 @@ class ProductAdminController extends FOSRestController
         // There is a debate if this should be a 404 or a 204
         // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
         return $this->routeRedirectView(
-            'api_admin_get_products', 
+            'api_admin_product_get_products', 
             array(), 
             Response::HTTP_NO_CONTENT
             );        
